@@ -123,7 +123,7 @@ case $1 in
         read continue_response
         if [[ "${continue_response}" == "y" ]]; then
             git add .
-            local commit_date=$(date '+%Y-%m-%d %H:%M:%S')
+            commit_date=$(date '+%Y-%m-%d %H:%M:%S')
             git commit -m "dotfiles backup ${commit_date}"
 
             echo -n "Can I push to remote?"
