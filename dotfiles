@@ -129,7 +129,7 @@ case $1 in
             echo -n "Can I push to remote?"
             read continue_response
             if [[ "${continue_response}" == "y" ]]; then
-                git push origin
+                git push origin master
             fi    
         fi
         popd > /dev/null
