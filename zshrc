@@ -108,7 +108,7 @@ export ANDROID_NDK=/Users/menny/dev/ndk
 export PATH=$PATH:$ANDROID_HOME/tools
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 
-#dot-files check
-if [[ $(git --git-dir=dev/menny/dotfiles/.git --work-tree=dev/menny/dotfiles diff --stat) != '' ]]; then
-  echo '[DOTFILES] your dotfiles repo is marked as dirty. You might want to push the recent changes to your remote repo.'
-fi
+#dotfiles
+export PATH=$PATH:~/dev/menny/dotfiles
+dotfiles noop
+

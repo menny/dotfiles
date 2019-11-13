@@ -30,8 +30,8 @@ function remove_dotfile() {
         else
             echo "${line}" >> ${TMPDIR}/remove_dotfile
         fi
-    done < dotfiles.lst
-    mv ${TMPDIR}/remove_dotfile dotfiles.lst
+    done < ${repo_folder}/dotfiles.lst
+    mv ${TMPDIR}/remove_dotfile ${repo_folder}/dotfiles.lst
 }
 
 function add_dotfile() {
@@ -46,8 +46,8 @@ function add_dotfile() {
     if [[ -f "${dotfile}" ]]; then
         remove_dotfile ${name}
         echo "${encrypted}:${name}:${dotfile}" >> dotfiles.lst
-        uniq=($(cat dotfiles.lst | sort -u))
-        printf "%s\n" "${uniq[@]}" > dotfiles.lst
+        uniq=($(cat ${repo_folder}/dotfiles.lst | sort -u))
+        printf "%s\n" "${uniq[@]}" > ${repo_folder}/dotfiles.lst
 
         mv ${dotfile} ${repo_folder}/${name}
         ln -s ${repo_folder}/${name} ${dotfile}
@@ -60,9 +60,9 @@ function add_dotfile() {
 function add_bin() {
     local required_bin=$1
     command -v ${required_bin} >/dev/null 2>&1 || { echo >&2 "required '${required_bin}' is not installed.  Aborting."; exit 1; }
-    echo "${required_bin}" >> required_bins.lst
-    uniq=($(cat required_bins.lst | sort -u))
-    printf "%s\n" "${uniq[@]}" > required_bins.lst
+    echo "${required_bin}" >> ${repo_folder}/required_bins.lst
+    uniq=($(cat ${repo_folder}/required_bins.lst | sort -u))
+    printf "%s\n" "${uniq[@]}" > ${repo_folder}/required_bins.lst
 }
 
 function remove_bin() {
@@ -76,7 +76,7 @@ function remove_bin() {
     do
         [[ ${line} != ${name} ]] && echo "${line}"
     done < required_bins.lst > ${TMPDIR}/remove_bin
-    mv ${TMPDIR}/remove_bin required_bins.lst
+    mv ${TMPDIR}/remove_bin ${repo_folder}/required_bins.lst
 }
 
 function verify_bins() {
@@ -85,7 +85,7 @@ function verify_bins() {
         echo -n "Checking ${required_bin} available.. "
         command -v ${required_bin} >/dev/null 2>&1 || { echo >&2 "required '${required_bin}' is not installed.  Aborting."; exit 1; }
         echo "✓"
-    done < required_bins.lst
+    done < ${repo_folder}/required_bins.lst
 }
 
 function encrypt_file() {
@@ -93,14 +93,14 @@ function encrypt_file() {
     local encrypted_file=$2
     openssl enc -in ${file_to_encrypt} \
         -aes-256-cbc \
-        -pass stdin > ${encrypted_file}
+        -pass stdin > ${repo_folder}/${encrypted_file}
 }
 
 function decrypt_file() {
     local file_to_encrypt=$1
     local encrypted_file=$2
     
-    openssl enc -in ${encrypted_file} \
+    openssl enc -in ${repo_folder}/${encrypted_file} \
         -d -aes-256-cbc \
         -pass stdin > ${file_to_encrypt}
 }
@@ -114,6 +114,25 @@ case $1 in
         echo "Restoring:"
         verify_bins
         restore_links
+        ;;
+    commit)
+        echo "Committing:"
+        pushd ${repo_folder} > /dev/null
+        git status
+        echo -n "Can I commit locally?"
+        read continue_response
+        if [[ "${continue_response}" == "y" ]]; then
+            git add .
+            printf -v commit_date '%(%Y-%m-%d %H:%M:%S)T\n' -1 
+            git commit -m "dotfiles backup ${commit_date}"
+
+            echo -n "Can I push to remote?"
+            read continue_response
+            if [[ "${continue_response}" == "y" ]]; then
+                git push origin
+            fi    
+        fi
+        popd > /dev/null
         ;;
     add)
         echo -n "Adding backup $2 from dotfile $3: "
@@ -140,15 +159,19 @@ case $1 in
         echo "✓"
         ;;
     list)
-        echo "Required bins:"
-        cat required_bins.lst
+        echo "* Required bins:"
+        cat ${repo_folder}/required_bins.lst
         echo ""
-        echo "Backuped dotfiles:"
-        cat dotfiles.lst
+        echo "* Managed dotfiles:"
+        cat ${repo_folder}/dotfiles.lst
+        ;;
+    noop)
+        #no-op. mostly here so the dirty check could be called.
         ;;
     *)
         echo "Supported commands:"
         echo "restore - links the dotfiles in this repo to the correct locations."
+        echo "commit - commits and pushes local changes to repo."
         echo "add [backup-name] [full/path/to/.dotfile] - adds a dotfile to this repo with the given name."
         echo "*(not supported)* add-enc [backup-name] [full/path/to/.dotfile] - adds a dotfile to this repo with the given name, and encrypts it."
         echo "remove [backup-name] - removes a dotfile from the list of backuped dotfiles."
@@ -157,3 +180,7 @@ case $1 in
         echo "list - prints out a list of all backup dotfiles and required bins."
     ;;
 esac
+
+if [[ $(git --git-dir=${repo_folder}/.git --work-tree=${repo_folder} diff --stat) != '' ]]; then
+  echo "** [DOTFILES] your dotfiles repo is marked as dirty. You may want to push the recent changes to your remote repo by calling 'dotfiles commit'."
+fi
