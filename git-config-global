@@ -8,3 +8,5 @@
   path = .gitconfig-spotify
 [includeIf "gitdir:~/dev/menny/"]
   path = .gitconfig-personal
+[push]
+	default = simple
