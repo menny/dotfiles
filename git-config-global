@@ -1,0 +1,10 @@
+[alias]
+	co = checkout
+[user]
+	name = Menny Even Danan
+[pager]
+	branch = false
+[includeIf "gitdir:~/dev/spotify/"]
+  path = .gitconfig-spotify
+[includeIf "gitdir:~/dev/menny/"]
+  path = .gitconfig-personal
