@@ -97,7 +97,13 @@ fi
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
 eval "$(jenv init -)"
+#jenv enable-plugin grails
+#jenv enable-plugin groovy
+#jenv enable-plugin maven
+#jenv enable-plugin gradle
+#jenv enable-plugin export
 
 JAVA_OPTS='-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee'%
 
@@ -108,7 +114,8 @@ export ANDROID_NDK=/Users/menny/dev/ndk
 export PATH=$PATH:$ANDROID_HOME/tools
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 
+alias gitclean="git clean -f -d && git reset --hard HEAD"
+
 #dotfiles
 export PATH=$PATH:~/dev/menny/dotfiles
 dotfiles noop
-
