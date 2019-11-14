@@ -46,6 +46,9 @@ function add_dotfile() {
     fi
 
     if [[ -f "${dotfile}" ]]; then
+        #this will allow / in the name
+        mkdir -p $(dirname ${repo_folder}/${name}) || true
+
         remove_dotfile ${name} ${password}
         echo "${encrypted}:${name}:${dotfile}" >> dotfiles.lst
         uniq=($(cat ${repo_folder}/dotfiles.lst | sort -u))
