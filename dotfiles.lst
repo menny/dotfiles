@@ -1,3 +1,4 @@
+encrypted:secrets_rc:/Users/menny/.secrets_rc
 plain:git-config-global:/Users/menny/.gitconfig
 plain:git-personal:/Users/menny/.gitconfig-personal
 plain:git-spotify:/Users/menny/.gitconfig-spotify
