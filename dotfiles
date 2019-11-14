@@ -20,7 +20,7 @@ function remove_dotfile() {
     echo -n "" > ${TMPDIR}/remove_dotfile
     while read -r line
     do
-        regex=".+:${name}:(.+)"
+        local regex=".+:${name}:(.+)"
 
         if [[ ${line} =~ ${regex} ]]; then
             local actual_file=${BASH_REMATCH[1]}
@@ -106,7 +106,31 @@ function decrypt_file() {
 }
 
 function restore_links() {
-    echo ""
+    local regex="(.+):(.+):(.+)"
+    local backup_folder="${HOME}/dotfiles_backup"
+
+    while IFS= read -r dotfile_line
+    do
+        if [[ ${dotfile_line} =~ ${regex} ]]; then
+            local encrypted=${BASH_REMATCH[1]}
+            local repo_namefile=${BASH_REMATCH[2]}
+            local actual_file=${BASH_REMATCH[3]}
+            echo -n "Restoring '${actual_file}'... "
+            if [[ -f ${actual_file} ]]; then
+                local dotfile_backup=${backup_folder}${actual_file}
+                echo -n "backing up to '${dotfile_backup}'... "
+                mkdir -p $(dirname ${dotfile_backup}) || true
+                mv ${actual_file} ${dotfile_backup}
+                echo -n "💼 "
+            fi
+            #restoring link
+            ln -s ${repo_folder}/${repo_namefile} ${actual_file}
+            echo "✓"
+        elif [[ ! -z ${dotfile_line} ]]; then
+            echo "input line '${dotfile_line}' has illegal format!"
+            exit 1
+        fi
+    done < ${repo_folder}/dotfiles.lst
 }
 
 case $1 in
@@ -114,6 +138,7 @@ case $1 in
         echo "Restoring:"
         verify_bins
         restore_links
+        echo "Done."
         ;;
     commit)
         echo "Committing:"
