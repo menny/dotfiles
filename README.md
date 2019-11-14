@@ -3,7 +3,7 @@ My personal dotfiles repo and related tools.
 
 # Usage
 
- * `dotfiles restore` - links the dotfiles in this repo to the correct locations.
+ * `dotfiles restore` - links the dotfiles in this repo to the correct locations. This is usually happens once, when you restoring to a new machine.
  * `dotfiles commit` - commits and pushes local changes to repo.
  * `dotfiles add [backup-name] [full/path/to/.dotfile]` - adds a dotfile to this repo with the given name.
  * _(not supported)_ `dotfiles.sh add-enc [backup-name] [full/path/to/.dotfile]` - adds a dotfile to this repo with the given name, and encrypts it.

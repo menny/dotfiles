@@ -116,6 +116,9 @@ export PATH=$PATH:$ANDROID_HOME/platform-tools
 
 alias gitclean="git clean -f -d && git reset --hard HEAD"
 
+source ~/.secrets_rc
+
 #dotfiles
 export PATH=$PATH:~/dev/menny/dotfiles
 dotfiles noop
+

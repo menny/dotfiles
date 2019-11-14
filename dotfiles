@@ -1,56 +1,66 @@
 #!/bin/bash
+set -e
 
 repo_folder="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-function link_dotfile_to_actual() {
-    local dotfile_repo_path=$1
-    local dotfile_target_path=$2
-    local backup_folder=$3
-
-    
-}
-
 function remove_dotfile() {
-    local name=$1
+    local name=${1}
+    local password=${2}
     if [[ -z "${name}" ]] ; then
         echo "missing arguments. dotfiles.sh remove [backup-name]"
         exit 1
     fi
 
-    echo -n "" > ${TMPDIR}/remove_dotfile
+    echo -n "" > ${TMPDIR}/remove_dotfiles.lst
     while read -r line
     do
-        local regex=".+:${name}:(.+)"
+        local regex="(.+):${name}:(.+)"
 
         if [[ ${line} =~ ${regex} ]]; then
-            local actual_file=${BASH_REMATCH[1]}
+            local encrypted=${BASH_REMATCH[1]}
+            local actual_file=${BASH_REMATCH[2]}
             #restoring link
             rm ${actual_file}
-            mv ${repo_folder}/${name} ${actual_file}
+            if [[ "${encrypted}" == "encrypted" ]]; then
+                decrypt_file ${repo_folder}/${name} ${actual_file} ${password}
+                rm ${repo_folder}/decrypted_dotfiles/decrypted_${name}
+                rm ${repo_folder}/${name}
+            else
+                mv ${repo_folder}/${name} ${actual_file}
+            fi
         else
-            echo "${line}" >> ${TMPDIR}/remove_dotfile
+            echo "${line}" >> ${TMPDIR}/remove_dotfiles.lst
         fi
     done < ${repo_folder}/dotfiles.lst
-    mv ${TMPDIR}/remove_dotfile ${repo_folder}/dotfiles.lst
+    mv ${TMPDIR}/remove_dotfiles.lst ${repo_folder}/dotfiles.lst
 }
 
 function add_dotfile() {
     local name=$1
     local dotfile=$2
     local encrypted=${3:-plain}
+    local password=${4}
     if [[ -z "${dotfile}" ]] || [[ -z "${name}" ]] ; then
         echo "missing arguments. dotfiles.sh add/add-enc [full/path/to/.dotfile] [backup-name]"
         exit 1
     fi
 
     if [[ -f "${dotfile}" ]]; then
-        remove_dotfile ${name}
+        remove_dotfile ${name} ${password}
         echo "${encrypted}:${name}:${dotfile}" >> dotfiles.lst
         uniq=($(cat ${repo_folder}/dotfiles.lst | sort -u))
         printf "%s\n" "${uniq[@]}" > ${repo_folder}/dotfiles.lst
 
-        mv ${dotfile} ${repo_folder}/${name}
-        ln -s ${repo_folder}/${name} ${dotfile}
+        if [[ "${encrypted}" == "encrypted" ]]; then
+            local decrypted_file=${repo_folder}/decrypted_dotfiles/decrypted_${name}
+            mkdir -p $(dirname ${decrypted_file}) || true
+            mv ${dotfile} ${decrypted_file}
+            ln -s ${decrypted_file} ${dotfile}
+            encrypt_file ${decrypted_file} ${repo_folder}/${name} ${password}
+        else
+            mv ${dotfile} ${repo_folder}/${name}
+            ln -s ${repo_folder}/${name} ${dotfile}
+        fi
     else
         echo "dotfile '${dotfile}' does not exist!"
         exit 1
@@ -91,23 +101,23 @@ function verify_bins() {
 function encrypt_file() {
     local file_to_encrypt=$1
     local encrypted_file=$2
-    openssl enc -in ${file_to_encrypt} \
-        -aes-256-cbc \
-        -pass stdin > ${repo_folder}/${encrypted_file}
+    local password=$3
+    openssl enc -a -aes-256-cbc -md md5 -salt -in ${file_to_encrypt} -out ${encrypted_file} -k ${password}
+    echo -n "🔐 "
 }
 
 function decrypt_file() {
-    local file_to_encrypt=$1
-    local encrypted_file=$2
-    
-    openssl enc -in ${repo_folder}/${encrypted_file} \
-        -d -aes-256-cbc \
-        -pass stdin > ${file_to_encrypt}
+    local encrypted_file=$1
+    local decrypted_file=$2
+    local password=$3
+    openssl enc -a -aes-256-cbc -md md5 -salt -d -in ${encrypted_file} -out ${decrypted_file} -k ${password}
+    echo -n "🔓 "
 }
 
 function restore_links() {
     local regex="(.+):(.+):(.+)"
     local backup_folder="${HOME}/dotfiles_backup"
+    local password=${1}
 
     while IFS= read -r dotfile_line
     do
@@ -115,17 +125,30 @@ function restore_links() {
             local encrypted=${BASH_REMATCH[1]}
             local repo_namefile=${BASH_REMATCH[2]}
             local actual_file=${BASH_REMATCH[3]}
+            local post_msg=""
             echo -n "Restoring '${actual_file}'... "
             if [[ -f ${actual_file} ]]; then
-                local dotfile_backup=${backup_folder}${actual_file}
-                echo -n "backing up to '${dotfile_backup}'... "
-                mkdir -p $(dirname ${dotfile_backup}) || true
-                mv ${actual_file} ${dotfile_backup}
-                echo -n "💼 "
+                if [[ ! -L ${actual_file} ]]; then
+                    #we can just unlink
+                    rm ${actual_file}
+                else
+                    local dotfile_backup=${backup_folder}${actual_file}
+                    mkdir -p $(dirname ${dotfile_backup}) || true
+                    mv ${actual_file} ${dotfile_backup}
+                    echo -n "💼 "
+                    post_msg=" previous file was backed-up to ${dotfile_backup}."
+                fi
             fi
             #restoring link
-            ln -s ${repo_folder}/${repo_namefile} ${actual_file}
-            echo "✓"
+            if [[ "${encrypted}" == "encrypted" ]]; then
+                local decrypted_file=${repo_folder}/decrypted_dotfiles/decrypted_${repo_namefile}
+                mkdir -p $(dirname ${decrypted_file}) || true
+                decrypt_file ${repo_folder}/${repo_namefile} ${decrypted_file} ${password}
+                ln -s ${decrypted_file} ${actual_file}
+            else
+                ln -s ${repo_folder}/${repo_namefile} ${actual_file}
+            fi
+            echo "✓ ${post_msg}"
         elif [[ ! -z ${dotfile_line} ]]; then
             echo "input line '${dotfile_line}' has illegal format!"
             exit 1
@@ -135,24 +158,34 @@ function restore_links() {
 
 case $1 in
     restore)
+        password=""
+        if [[ ! -z $(grep "encrypted:" ${repo_folder}/dotfiles.lst) ]]; then
+            read -s -p "Enter password for decryption: " password
+            if [[ -z "${password}" ]]; then
+                echo " EMPTY! "
+                exit 1
+            else
+                echo "🔓 "
+            fi
+        fi
         echo "Restoring:"
         verify_bins
-        restore_links
+        restore_links ${password}
         echo "Done."
         ;;
     commit)
         echo "Committing:"
         pushd ${repo_folder} > /dev/null
         git status
-        echo -n "Can I commit locally?"
-        read continue_response
+        read -p "Can I commit locally? " continue_response
+        echo ""
         if [[ "${continue_response}" == "y" ]]; then
             git add .
             commit_date=$(date '+%Y-%m-%d %H:%M:%S')
             git commit -m "dotfiles backup ${commit_date}"
 
-            echo -n "Can I push to remote?"
-            read continue_response
+            read -p "Can I push to remote?" continue_response
+            echo ""
             if [[ "${continue_response}" == "y" ]]; then
                 git push origin master
             fi    
@@ -160,17 +193,37 @@ case $1 in
         popd > /dev/null
         ;;
     add)
-        echo -n "Adding backup $2 from dotfile $3: "
+        echo -n "Adding dotfile $2 from $3: "
         add_dotfile $2 $3
         echo "✓"
         ;;
     add-enc)
-        echo "Not supported at the moment"
-        exit 1
+        password=""
+        read -s -p "Enter password for encryption: " password
+        if [[ -z "${password}" ]]; then
+                echo " EMPTY! "
+                exit 1
+            else
+                echo "🔐 "
+            fi
+        echo -n "Adding dotfile $2 from $3 and encrypting: "
+        add_dotfile $2 $3 encrypted ${password}
+        echo "✓"
         ;;
     remove)
+        password=""
+        if [[ ! -z $(grep "encrypted:$2:" ${repo_folder}/dotfiles.lst) ]]; then
+            read -s -p "Enter password for decryption: " password
+            if [[ -z "${password}" ]]; then
+                echo " EMPTY! "
+                exit 1
+            else
+                echo "🔓 "
+            fi
+        fi
+
         echo -n "Removing dotfile $2: "
-        remove_dotfile $2
+        remove_dotfile $2 ${password}
         echo "✓"
         ;;
     add-bin)
@@ -195,7 +248,7 @@ case $1 in
         ;;
     *)
         echo "Supported commands:"
-        echo "restore - links the dotfiles in this repo to the correct locations."
+        echo "restore - links the dotfiles in this repo to the correct locations. This is usually happens once, when you restoring to a new machine."
         echo "commit - commits and pushes local changes to repo."
         echo "add [backup-name] [full/path/to/.dotfile] - adds a dotfile to this repo with the given name."
         echo "*(not supported)* add-enc [backup-name] [full/path/to/.dotfile] - adds a dotfile to this repo with the given name, and encrypts it."
