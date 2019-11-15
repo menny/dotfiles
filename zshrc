@@ -103,6 +103,7 @@ eval "$(jenv init -)"
 #jenv enable-plugin groovy
 #jenv enable-plugin maven
 #jenv enable-plugin gradle
+#jenv enable-plugin sbt
 #jenv enable-plugin export
 
 JAVA_OPTS='-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee'%
