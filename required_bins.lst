@@ -2,4 +2,6 @@ brew
 code
 git
 jenv
+openssl
+wget
 zsh
