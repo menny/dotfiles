@@ -68,7 +68,7 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=()
 
 source $ZSH/oh-my-zsh.sh
 
@@ -106,14 +106,19 @@ eval "$(jenv init -)"
 #jenv enable-plugin sbt
 #jenv enable-plugin export
 
+launchctl remove com.carbonblack.defense.ui && launchctl stop com.carbonblack.defense.ui
+
 JAVA_OPTS='-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee'%
 
 export DAILY_GRADLE_RESTART=1
 
 export ANDROID_SDK=/Users/menny/dev/sdk
+export ANDROID_HOME=/Users/menny/dev/sdk
 export ANDROID_NDK=/Users/menny/dev/ndk
 export PATH=$PATH:$ANDROID_HOME/tools
 export PATH=$PATH:$ANDROID_HOME/platform-tools
+
+export PATH=$PATH:$HOME/bin
 
 alias gitclean="git clean -f -d && git reset --hard HEAD"
 

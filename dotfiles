@@ -254,7 +254,7 @@ case $1 in
         echo "restore - links the dotfiles in this repo to the correct locations. This is usually happens once, when you restoring to a new machine."
         echo "commit - commits and pushes local changes to repo."
         echo "add [backup-name] [full/path/to/.dotfile] - adds a dotfile to this repo with the given name."
-        echo "*(not supported)* add-enc [backup-name] [full/path/to/.dotfile] - adds a dotfile to this repo with the given name, and encrypts it."
+        echo "add-enc [backup-name] [full/path/to/.dotfile] - adds a dotfile to this repo with the given name, and encrypts it."
         echo "remove [backup-name] - removes a dotfile from the list of backuped dotfiles."
         echo "add-bin [binary-name] - adds a required bin."
         echo "remove-bin [binary-name] - removes a required bin."
