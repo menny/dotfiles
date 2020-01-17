@@ -1,5 +1,6 @@
 [alias]
 	co = checkout
+	stts = status
 [user]
 	name = Menny Even Danan
 [pager]

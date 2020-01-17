@@ -124,7 +124,8 @@ alias gitclean="git clean -f -d && git reset --hard HEAD"
 
 source ~/.secrets_rc
 
+ssh-add -K
+
 #dotfiles
 export PATH=$PATH:~/dev/menny/dotfiles
 dotfiles noop
-
