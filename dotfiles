@@ -50,7 +50,7 @@ function add_dotfile() {
         mkdir -p $(dirname ${repo_folder}/${name}) || true
 
         remove_dotfile ${name} ${password}
-        echo "${encrypted}:${name}:${dotfile}" >> dotfiles.lst
+        echo "${encrypted}:${name}:${dotfile}" >> ${repo_folder}/dotfiles.lst
         uniq=($(cat ${repo_folder}/dotfiles.lst | sort -u))
         printf "%s\n" "${uniq[@]}" > ${repo_folder}/dotfiles.lst
 
