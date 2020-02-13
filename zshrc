@@ -108,7 +108,7 @@ eval "$(jenv init -)"
 
 launchctl remove com.carbonblack.defense.ui && launchctl stop com.carbonblack.defense.ui
 
-JAVA_OPTS='-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee'%
+export JAVA_OPTS="-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee"
 
 export DAILY_GRADLE_RESTART=1
 

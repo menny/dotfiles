@@ -180,9 +180,11 @@ case $1 in
         echo "Committing:"
         pushd ${repo_folder} > /dev/null
         git status
-        read -p "Can I commit locally? " continue_response
+        read -p "Can I commit locally (y)es, (n)o, (d)iff? " continue_response
         echo ""
-        if [[ "${continue_response}" == "y" ]]; then
+        if [[ "${continue_response}" == "d" ]]; then
+            git diff
+        elif [[ "${continue_response}" == "y" ]]; then
             git add .
             commit_date=$(date '+%Y-%m-%d %H:%M:%S')
             git commit -m "dotfiles backup ${commit_date}"
@@ -191,7 +193,7 @@ case $1 in
             echo ""
             if [[ "${continue_response}" == "y" ]]; then
                 git push origin master
-            fi    
+            fi
         fi
         popd > /dev/null
         ;;
