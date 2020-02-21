@@ -189,7 +189,7 @@ case $1 in
             commit_date=$(date '+%Y-%m-%d %H:%M:%S')
             git commit -m "dotfiles backup ${commit_date}"
 
-            read -p "Can I push to remote?" continue_response
+            read -p "Can I push to remote? (y)es, (n)o " continue_response
             echo ""
             if [[ "${continue_response}" == "y" ]]; then
                 git push origin master
