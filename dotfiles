@@ -197,6 +197,11 @@ case $1 in
         fi
         popd > /dev/null
         ;;
+    diff)
+        pushd ${repo_folder} > /dev/null
+        git diff
+        popd > /dev/null
+        ;;
     add)
         echo -n "Adding dotfile $2 from $3: "
         add_dotfile $2 $3
@@ -254,6 +259,7 @@ case $1 in
     *)
         echo "Supported commands:"
         echo "restore - links the dotfiles in this repo to the correct locations. This is usually happens once, when you restoring to a new machine."
+        echo "diff - git diff your dotfiles."
         echo "commit - commits and pushes local changes to repo."
         echo "add [backup-name] [full/path/to/.dotfile] - adds a dotfile to this repo with the given name."
         echo "add-enc [backup-name] [full/path/to/.dotfile] - adds a dotfile to this repo with the given name, and encrypts it."

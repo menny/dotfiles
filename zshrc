@@ -129,3 +129,4 @@ ssh-add -K
 #dotfiles
 export PATH=$PATH:~/dev/menny/dotfiles
 dotfiles noop
+export PATH="/usr/local/opt/ruby/bin:$PATH"
