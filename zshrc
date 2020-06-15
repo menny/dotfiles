@@ -1,8 +1,9 @@
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/menny/.oh-my-zsh"
+export ZSH="/home/menny/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -98,6 +99,7 @@ fi
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+export PATH="$HOME/.jenv/bin:$PATH"
 eval "$(jenv init -)"
 #jenv enable-plugin grails
 #jenv enable-plugin groovy
@@ -106,27 +108,27 @@ eval "$(jenv init -)"
 #jenv enable-plugin sbt
 #jenv enable-plugin export
 
-launchctl remove com.carbonblack.defense.ui && launchctl stop com.carbonblack.defense.ui
+#launchctl remove com.carbonblack.defense.ui && launchctl stop com.carbonblack.defense.ui
 
 export JAVA_OPTS="-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee"
 
 export DAILY_GRADLE_RESTART=1
 
-export ANDROID_SDK=/Users/menny/dev/sdk
-export ANDROID_HOME=/Users/menny/dev/sdk
-export ANDROID_NDK=/Users/menny/dev/ndk
-export PATH=$PATH:$ANDROID_HOME/tools
-export PATH=$PATH:$ANDROID_HOME/platform-tools
+export ANDROID_SDK="$HOME/dev/sdk"
+export ANDROID_HOME="$HOME/dev/sdk"
+export ANDROID_NDK="$HOME/dev/ndk"
+export PATH="$PATH:$ANDROID_HOME/tools"
+export PATH="$PATH:$ANDROID_HOME/platform-tools"
 
-export PATH=$PATH:$HOME/bin
+export PATH="$PATH:$HOME/bin"
 
 alias gitclean="git clean -f -d && git reset --hard HEAD"
 
-source ~/.secrets_rc
+source "$HOME/.secrets_rc"
 
 ssh-add -K
 
 #dotfiles
-export PATH=$PATH:~/dev/menny/dotfiles
+export PATH="$PATH:$HOME/dev/menny/dotfiles"
 dotfiles noop
 export PATH="/usr/local/opt/ruby/bin:$PATH"

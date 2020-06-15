@@ -1,5 +1,5 @@
-encrypted:secrets_rc:/Users/menny/.secrets_rc
-plain:git-config-global:/Users/menny/.gitconfig
-plain:git-personal:/Users/menny/.gitconfig-personal
-plain:git-spotify:/Users/menny/.gitconfig-spotify
-plain:zshrc:/Users/menny/.zshrc
+encrypted:secrets_rc:/home/menny/.secrets_rc
+plain:git-config-global:/home/menny/.gitconfig
+plain:git-personal:/home/menny/.gitconfig-personal
+plain:git-spotify:/home/menny/.gitconfig-spotify
+plain:zshrc:/home/menny/.zshrc
