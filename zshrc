@@ -126,7 +126,7 @@ alias gitclean="git clean -f -d && git reset --hard HEAD"
 
 source "$HOME/.secrets_rc"
 
-ssh-add -K
+#ssh-add -K
 
 #dotfiles
 export PATH="$PATH:$HOME/dev/menny/dotfiles"
