@@ -11,3 +11,5 @@
   path = .gitconfig-personal
 [push]
 	default = simple
+[pull]
+	ff = only

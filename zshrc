@@ -128,7 +128,9 @@ source "$HOME/.secrets_rc"
 
 #ssh-add -K
 
+export PATH="/usr/local/opt/ruby/bin:$PATH"
+export PATH="$PATH:/usr/local/go/bin"
+
 #dotfiles
 export PATH="$PATH:$HOME/dev/menny/dotfiles"
 dotfiles noop
-export PATH="/usr/local/opt/ruby/bin:$PATH"
