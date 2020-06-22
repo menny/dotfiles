@@ -18,14 +18,14 @@ ZSH_THEME="robbyrussell"
 # ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
 
 # Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
+CASE_SENSITIVE="false"
 
 # Uncomment the following line to use hyphen-insensitive completion.
 # Case-sensitive completion must be off. _ and - will be interchangeable.
 # HYPHEN_INSENSITIVE="true"
 
 # Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
+DISABLE_AUTO_UPDATE="false"
 
 # Uncomment the following line to automatically update without prompting.
 # DISABLE_UPDATE_PROMPT="true"
@@ -108,16 +108,12 @@ eval "$(jenv init -)"
 #jenv enable-plugin sbt
 #jenv enable-plugin export
 
-#launchctl remove com.carbonblack.defense.ui && launchctl stop com.carbonblack.defense.ui
-
-#export JAVA_OPTS="-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee"
-
 export DAILY_GRADLE_RESTART=1
 
 export ANDROID_SDK="$HOME/dev/sdk"
 export ANDROID_HOME="$HOME/dev/sdk"
 export ANDROID_NDK="$HOME/dev/ndk"
-export PATH="$PATH:$ANDROID_HOME/tools"
+export PATH="$PATH:$ANDROID_HOME/cmdline-tools/tools:$ANDROID_HOME/cmdline-tools/tools/bin"
 export PATH="$PATH:$ANDROID_HOME/platform-tools"
 
 export PATH="$PATH:$HOME/bin"
