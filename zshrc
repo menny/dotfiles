@@ -69,17 +69,21 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(bazel notify)
+plugins=(auto-notify bazel)
 
 source $ZSH/oh-my-zsh.sh
 
-zstyle ':notify:*' error-title "Shell command failed!!!"
-zstyle ':notify:*' success-title "Shell command finished (in #{time_elapsed} seconds)"
-zstyle ':notify:*' activate-terminal yes
-zstyle ':notify:*' command-complete-timeout 8
-zstyle ':notify:*' app-name sh
-zstyle ':notify:*' always-notify-on-failure yes
-zstyle ':notify:*' blacklist-regex 'find|grep|less|pico|nano'
+# These are for auto-notify zsh plugin
+export AUTO_NOTIFY_THRESHOLD=8
+export AUTO_NOTIFY_IGNORE=("find" "grep" "less" "pico" "nano")
+
+#These are for notify zsh plugin
+# zstyle ':notify:*' error-title "Shell command failed!!!"
+# zstyle ':notify:*' success-title "Shell command finished (in #{time_elapsed} seconds)"
+# zstyle ':notify:*' activate-terminal yes
+# zstyle ':notify:*' app-name sh
+# zstyle ':notify:*' always-notify-on-failure yes
+# zstyle ':notify:*' blacklist-regex 'find|grep|less|pico|nano'
 
 # User configuration
 
