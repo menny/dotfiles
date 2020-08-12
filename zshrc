@@ -76,6 +76,7 @@ source $ZSH/oh-my-zsh.sh
 # These are for auto-notify zsh plugin
 export AUTO_NOTIFY_THRESHOLD=8
 export AUTO_NOTIFY_IGNORE=("find" "grep" "less" "pico" "nano")
+export AUTO_NOTIFY_EXPIRE_TIME=4000
 
 #These are for notify zsh plugin
 # zstyle ':notify:*' error-title "Shell command failed!!!"
@@ -131,6 +132,7 @@ export PATH="$PATH:$ANDROID_HOME/platform-tools"
 export PATH="$PATH:$HOME/bin"
 
 alias gitclean="git clean -f -d && git reset --hard HEAD"
+alias open="xgd-open"
 
 source "$HOME/.secrets_rc"
 
