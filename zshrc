@@ -132,7 +132,7 @@ export PATH="$PATH:$ANDROID_HOME/platform-tools"
 export PATH="$PATH:$HOME/bin"
 
 alias gitclean="git clean -f -d && git reset --hard HEAD"
-alias open="xgd-open"
+alias open="xdg-open"
 
 source "$HOME/.secrets_rc"
 
