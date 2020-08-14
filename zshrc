@@ -74,7 +74,7 @@ plugins=(auto-notify bazel)
 source $ZSH/oh-my-zsh.sh
 
 # These are for auto-notify zsh plugin
-export AUTO_NOTIFY_THRESHOLD=8
+export AUTO_NOTIFY_THRESHOLD=30
 export AUTO_NOTIFY_IGNORE=("find" "grep" "less" "pico" "nano")
 export AUTO_NOTIFY_EXPIRE_TIME=4000
 
