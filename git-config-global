@@ -3,6 +3,7 @@
 	stts = status
 [user]
 	name = Menny Even Danan
+	signingkey = 65E8F8AEE82144341F78A9E4D47742AF77F26720
 [pager]
 	branch = false
 [includeIf "gitdir:~/dev/spotify/"]
@@ -13,3 +14,5 @@
 	default = simple
 [pull]
 	ff = only
+[commit]
+	gpgsign = true
