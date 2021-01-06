@@ -144,3 +144,9 @@ export PATH="$PATH:/usr/local/go/bin"
 #dotfiles
 export PATH="$PATH:$HOME/dev/menny/dotfiles"
 dotfiles noop
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/menny/dev/google-cloud-sdk/path.zsh.inc' ]; then . '/home/menny/dev/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/menny/dev/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/menny/dev/google-cloud-sdk/completion.zsh.inc'; fi
