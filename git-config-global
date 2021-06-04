@@ -13,3 +13,5 @@
 	default = simple
 [pull]
 	ff = only
+[core]
+	autocrlf = input

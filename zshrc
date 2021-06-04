@@ -140,6 +140,7 @@ source "$HOME/.secrets_rc"
 
 export PATH="/usr/local/opt/ruby/bin:$PATH"
 export PATH="$PATH:/usr/local/go/bin"
+export PATH="/usr/share/swift/usr/bin:$PATH"
 
 #dotfiles
 export PATH="$PATH:$HOME/dev/menny/dotfiles"
@@ -150,3 +151,6 @@ if [ -f '/home/menny/dev/google-cloud-sdk/path.zsh.inc' ]; then . '/home/menny/d
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/home/menny/dev/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/menny/dev/google-cloud-sdk/completion.zsh.inc'; fi
+
+# This tells Bazel to use clang when building C code. Also, it's needed for swift support.
+export CC=clang
