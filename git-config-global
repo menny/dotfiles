@@ -15,3 +15,5 @@
 	ff = only
 [core]
 	autocrlf = input
+[gpg]
+	program = gpg
