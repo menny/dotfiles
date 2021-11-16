@@ -1,5 +1,5 @@
 [user]
 	email = menny@spotify.com
-	signingkey = 263D20AA93F9E9DB
+	signingkey = 87BAB80C579D7B73
 [commit]
 	gpgsign = true

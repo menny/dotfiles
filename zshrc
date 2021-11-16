@@ -139,6 +139,7 @@ source "$HOME/.secrets_rc"
 
 export PATH="/usr/local/opt/ruby/bin:$PATH"
 export PATH="$PATH:/usr/local/go/bin"
+export PATH="$PATH:$(go env GOPATH)/bin"
 export PATH="/usr/share/swift/usr/bin:$PATH"
 
 #dotfiles
