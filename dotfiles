@@ -3,12 +3,29 @@ set -e
 
 repo_folder="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 TMPDIR="$(mktemp -d)"
+HOME="$(eval echo ~$USER)"
+
+#must run from the HOME folder
+if [[ "$HOME" != "$(pwd)" ]]; then
+    echo "This script must be executed from the user home directory ($HOME)!"
+    exit 1
+fi
+
+function source_script() {
+    local title="$1"
+    local script="$2"
+    if [[ -f "$script" ]]; then
+        echo -n "$title"
+        source "$script" "$repo_folder" "$HOME" "$TMPDIR"
+    fi
+}
 
 function remove_dotfile() {
     local name=${1}
     local password=${2}
     if [[ -z "${name}" ]] ; then
-        echo "missing arguments. dotfiles.sh remove [backup-name]"
+        echo "ERROR:"
+        echo "ERROR: missing arguments. dotfiles.sh remove [backup-name]"
         exit 1
     fi
 
@@ -38,14 +55,21 @@ function remove_dotfile() {
 
 function add_dotfile() {
     local name=$1
-    local dotfile=$2
+    local dotfile=$(eval echo $2)
     local encrypted=${3:-plain}
     local password=${4}
     if [[ -z "${dotfile}" ]] || [[ -z "${name}" ]] ; then
-        echo "missing arguments. dotfiles.sh add/add-enc [full/path/to/.dotfile] [backup-name]"
+        echo "ERROR:"
+        echo "ERROR: missing arguments. dotfiles.sh add/add-enc [full/path/to/.dotfile] [backup-name]"
         exit 1
     fi
-
+    if [[ "${dotfile:0:1}" != "/" ]]; then
+        echo "ERROR:"
+        echo "ERROR: Please, use absolute paths."
+        exit 1
+    fi
+    
+    source_script " [pre-add-hook] " "$repo_folder/pre-add-hook.sh"
     if [[ -f "${dotfile}" ]]; then
         #this will allow / in the name
         mkdir -p $(dirname ${repo_folder}/${name}) || true
@@ -69,6 +93,7 @@ function add_dotfile() {
         echo "dotfile '${dotfile}' does not exist!"
         exit 1
     fi
+    source_script " [post-add-hook] " "$repo_folder/post-add-hook.sh"
 }
 
 function add_bin() {
@@ -82,7 +107,8 @@ function add_bin() {
 function remove_bin() {
     local name=$1
     if [[ -z "${name}" ]] ; then
-        echo "missing arguments. dotfiles.sh remove-bin [required-bin-filename]"
+        echo "ERROR:"
+        echo "ERROR: missing arguments. dotfiles.sh remove-bin [required-bin-filename]"
         exit 1
     fi
 
@@ -103,17 +129,17 @@ function verify_bins() {
 }
 
 function encrypt_file() {
-    local file_to_encrypt=$1
-    local encrypted_file=$2
-    local password=$3
+    local file_to_encrypt="$1"
+    local encrypted_file="$2"
+    local password="$3"
     openssl enc -a -aes-256-cbc -md md5 -salt -in ${file_to_encrypt} -out ${encrypted_file} -k ${password}
     echo -n "🔐 "
 }
 
 function decrypt_file() {
-    local encrypted_file=$1
-    local decrypted_file=$2
-    local password=$3
+    local encrypted_file="$1"
+    local decrypted_file="$2"
+    local password="$3"
     openssl enc -a -aes-256-cbc -md md5 -salt -d -in ${encrypted_file} -out ${decrypted_file} -k ${password}
     echo -n "🔓 "
 }
@@ -172,9 +198,11 @@ case $1 in
                 echo "🔓 "
             fi
         fi
+        source_script " [pre-restore-hook] " "$repo_folder/pre-restore-hook.sh"
         echo "Restoring:"
         verify_bins
         restore_links ${password}
+        source_script " [post-restore-hook] " "$repo_folder/post-restore-hook.sh"
         echo "Done."
         ;;
     commit)

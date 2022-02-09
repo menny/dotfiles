@@ -1,6 +1,6 @@
+encrypted:gnupg:/home/menny/signatures/signatures_gnupg.tar.bz2
 encrypted:secrets_rc:/home/menny/.secrets_rc
-encrypted:ssh-private:/home/menny/.ssh/id_rsa
-encrypted:ssh-pub:/home/menny/.ssh/id_rsa.pub
+encrypted:ssh:/home/menny/signatures/signatures_ssh.tar.bz2
 plain:git-config-global:/home/menny/.gitconfig
 plain:git-personal:/home/menny/.gitconfig-personal
 plain:git-spotify:/home/menny/.gitconfig-spotify

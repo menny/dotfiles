@@ -25,11 +25,11 @@ pacman -Sy jdk11-openjdk
 
 install_from_git https://aur.archlinux.org/google-chrome.git
 install_from_git https://aur.archlinux.org/bazelisk.git
-install_from_git https://aur.archlinux.org/yaru.git
 install_from_git https://aur.archlinux.org/snapd.git
 
 systemctl enable --now snapd.socket
 ln -s /var/lib/snapd/snap /snap
+snap install snap-store
 
 echo "HibernateState=disk" > /etc/systemd/sleep.conf
 echo "HibernateMode=shutdown" >> /etc/systemd/sleep.conf
@@ -62,5 +62,6 @@ runuser -u "$ACTUAL_USER" -- git clone https://github.com/jenv/jenv.git ~/.jenv
 runuser -u "$ACTUAL_USER" -- snap install slack --classic
 runuser -u "$ACTUAL_USER" -- snap install spotify
 runuser -u "$ACTUAL_USER" -- snap install code --classic
+snap alias code code
 
 runuser -u "$ACTUAL_USER" -- wget --no-check-certificate http://install.ohmyz.sh -O - | sh
