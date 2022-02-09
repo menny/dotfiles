@@ -198,11 +198,9 @@ function reenc() {
             local repo_namefile=${BASH_REMATCH[2]}
             if [[ "${encrypted}" == "encrypted" ]]; then
                 echo -n "Re-encrypting ${repo_namefile}..."
-                echo -n "D..."
                 local decrypted_file=${repo_folder}/decrypted_dotfiles/decrypted_${repo_namefile}
                 mkdir -p $(dirname ${decrypted_file}) || true
                 decrypt_file ${repo_folder}/${repo_namefile} ${decrypted_file} ${old_password}
-                echo -n "E..."
                 encrypt_file ${decrypted_file} ${repo_folder}/${repo_namefile} ${new_password}
                 echo "✓"
             fi
@@ -335,7 +333,7 @@ case $1 in
 
         reenc "$old_password" "$new_password"
 
-        echo "🔓 "
+        echo "🔐"
         ;;
     noop)
         #no-op. mostly here so the dirty check could be called.
