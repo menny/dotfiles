@@ -21,12 +21,15 @@ function install_from_git() {
 pacman -Sy archlinux-keyring
 pacman -S --needed base-devel git
 pacman -Sy openssl wget curl go
-pacman -Sy flatpak
 pacman -Sy jdk11-openjdk
 
 install_from_git https://aur.archlinux.org/google-chrome.git
 install_from_git https://aur.archlinux.org/bazelisk.git
 install_from_git https://aur.archlinux.org/yaru.git
+install_from_git https://aur.archlinux.org/snapd.git
+
+systemctl enable --now snapd.socket
+ln -s /var/lib/snapd/snap /snap
 
 echo "HibernateState=disk" > /etc/systemd/sleep.conf
 echo "HibernateMode=shutdown" >> /etc/systemd/sleep.conf
@@ -45,18 +48,19 @@ chsh -s $(which zsh) "$ACTUAL_USER"
 pacman -S nvidia nvidia-utils nvidia-settings xorg-server-devel opencl-nvidia
 bash -c "echo blacklist nouveau > /etc/modprobe.d/blacklist-nvidia-nouveau.conf"
 pacman -Sy gnome-themes-extra
-pacman -Syyu
-
-runuser -u "$ACTUAL_USER" -- git clone https://github.com/jenv/jenv.git ~/.jenv
-runuser -u "$ACTUAL_USER" -- flatpak install Slack
-runuser -u "$ACTUAL_USER" -- flatpak install Spotify
-runuser -u "$ACTUAL_USER" -- flatpak install com.visualstudio.code
-
-runuser -u "$ACTUAL_USER" -- wget --no-check-certificate http://install.ohmyz.sh -O - | sh
 
 systemctl start bluetooth.service
 systemctl enable bluetooth.service
 
+systemctl disable cups.service
 systemctl start cups.socket
 systemctl enable cups.socket
-systemctl disable cups.service
+
+pacman -Syyu
+
+runuser -u "$ACTUAL_USER" -- git clone https://github.com/jenv/jenv.git ~/.jenv
+runuser -u "$ACTUAL_USER" -- snap install slack --classic
+runuser -u "$ACTUAL_USER" -- snap install spotify
+runuser -u "$ACTUAL_USER" -- snap install code --classic
+
+runuser -u "$ACTUAL_USER" -- wget --no-check-certificate http://install.ohmyz.sh -O - | sh
