@@ -186,6 +186,33 @@ function restore_links() {
     done < ${repo_folder}/dotfiles.lst
 }
 
+function reenc() {
+    local regex="(.+):(.+):(.+)"
+    local old_password="$1"
+    local new_password="$2"
+
+    while IFS= read -r dotfile_line
+    do
+        if [[ ${dotfile_line} =~ ${regex} ]]; then
+            local encrypted=${BASH_REMATCH[1]}
+            local repo_namefile=${BASH_REMATCH[2]}
+            if [[ "${encrypted}" == "encrypted" ]]; then
+                echo -n "Re-encrypting ${repo_namefile}..."
+                echo -n "D..."
+                local decrypted_file=${repo_folder}/decrypted_dotfiles/decrypted_${repo_namefile}
+                mkdir -p $(dirname ${decrypted_file}) || true
+                decrypt_file ${repo_folder}/${repo_namefile} ${decrypted_file} ${old_password}
+                echo -n "E..."
+                encrypt_file ${decrypted_file} ${repo_folder}/${repo_namefile} ${new_password}
+                echo "✓"
+            fi
+        elif [[ ! -z ${dotfile_line} ]]; then
+            echo "input line '${dotfile_line}' has illegal format!"
+            exit 1
+        fi
+    done < ${repo_folder}/dotfiles.lst
+}
+
 case $1 in
     restore)
         password=""
@@ -282,6 +309,34 @@ case $1 in
         echo "* Managed dotfiles:"
         cat ${repo_folder}/dotfiles.lst
         ;;
+    reenc)
+        read -s -p "Enter password for decryption (old password): " old_password
+        if [[ -z "${old_password}" ]]; then
+            echo " EMPTY! "
+            exit 1
+        fi
+        echo
+
+        read -s -p "Enter password for encryption (new password): " new_password
+        if [[ -z "${new_password}" ]]; then
+            echo " EMPTY! "
+            exit 1
+        fi
+        echo
+        read -s -p "Again, enter password for encryption (new password): " again_new_password
+        if [[ -z "${again_new_password}" ]]; then
+            echo " EMPTY! "
+            exit 1
+        fi
+        if [[ "$again_new_password" != "$new_password" ]]; then
+            echo "PASSWORDS DO NOT MATCH!"
+        fi
+        echo
+
+        reenc "$old_password" "$new_password"
+
+        echo "🔓 "
+        ;;
     noop)
         #no-op. mostly here so the dirty check could be called.
         ;;
@@ -292,6 +347,7 @@ case $1 in
         echo "commit - commits and pushes local changes to repo."
         echo "add [backup-name] [full/path/to/.dotfile] - adds a dotfile to this repo with the given name."
         echo "add-enc [backup-name] [full/path/to/.dotfile] - adds a dotfile to this repo with the given name, and encrypts it."
+        echo "reenc - changes the password of all encypted files."
         echo "remove [backup-name] - removes a dotfile from the list of backuped dotfiles."
         echo "add-bin [binary-name] - adds a required bin."
         echo "remove-bin [binary-name] - removes a required bin."
