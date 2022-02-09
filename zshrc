@@ -132,6 +132,7 @@ export PATH="$PATH:$HOME/bin"
 
 alias gitclean="git clean -f -d && git reset --hard HEAD"
 alias open="xdg-open"
+alias code="flatpak run com.visualstudio.code"
 
 source "$HOME/.secrets_rc"
 

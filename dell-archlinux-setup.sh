@@ -16,13 +16,13 @@ function install_from_git() {
 	runuser -u "$ACTUAL_USER" -- makepkg -sri
 	pacman -U $(ls *.tar.zst)
 	popd
-
 }
 
 pacman -Sy archlinux-keyring
 pacman -S --needed base-devel git
 pacman -Sy openssl wget curl go
 pacman -Sy flatpak
+pacman -Sy jdk11-openjdk
 
 install_from_git https://aur.archlinux.org/google-chrome.git
 install_from_git https://aur.archlinux.org/bazelisk.git
@@ -31,10 +31,15 @@ install_from_git https://aur.archlinux.org/yaru.git
 echo "HibernateState=disk" > /etc/systemd/sleep.conf
 echo "HibernateMode=shutdown" >> /etc/systemd/sleep.conf
 echo "options snd-hda-intel model=auto" > /etc/modprobe.d/fix-audio-input.conf
+echo "AutoEnable=true" >> /etc/bluetooth/main.conf
+
+pacman -Sy fwupd gnome-firmware
 pacman -Sy networkmanager wireless_tools
+pacman -Sy bluez bluez-utils
 pacman -Sy xorg-xwayland
 pacman -Sy wmctrl xdotool imagemagick
 pacman -Sy zsh zsh-completions
+pacman -Sy cups cups-pdf
 chsh -s $(which zsh) "$ACTUAL_USER"
 #homectl update --shell=$(which zsh) "$ACTUAL_USER"
 pacman -S nvidia nvidia-utils nvidia-settings xorg-server-devel opencl-nvidia
@@ -48,3 +53,10 @@ runuser -u "$ACTUAL_USER" -- flatpak install Spotify
 runuser -u "$ACTUAL_USER" -- flatpak install com.visualstudio.code
 
 runuser -u "$ACTUAL_USER" -- wget --no-check-certificate http://install.ohmyz.sh -O - | sh
+
+systemctl start bluetooth.service
+systemctl enable bluetooth.service
+
+systemctl start cups.socket
+systemctl enable cups.socket
+systemctl disable cups.service
