@@ -5,6 +5,4 @@ git
 jenv
 openssl
 wget
-wmctrl
-xdotool
 zsh
