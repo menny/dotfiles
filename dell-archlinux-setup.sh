@@ -22,6 +22,7 @@ pacman -Sy archlinux-keyring
 pacman -S --needed base-devel git
 pacman -Sy openssl wget curl go
 pacman -Sy jdk11-openjdk
+pacman -Sy python3
 
 install_from_git https://aur.archlinux.org/google-chrome.git
 install_from_git https://aur.archlinux.org/bazelisk.git
