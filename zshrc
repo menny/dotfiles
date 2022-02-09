@@ -9,7 +9,7 @@ export ZSH="/home/menny/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="robbyrussell"
+ZSH_THEME="simple"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -69,7 +69,9 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-#plugins=(auto-notify bazel)
+plugins=( \
+  #git-prompt \
+  )
 
 source $ZSH/oh-my-zsh.sh
 
@@ -132,7 +134,6 @@ export PATH="$PATH:$HOME/bin"
 
 alias gitclean="git clean -f -d && git reset --hard HEAD"
 alias open="xdg-open"
-alias code="flatpak run com.visualstudio.code"
 
 source "$HOME/.secrets_rc"
 
