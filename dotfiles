@@ -132,7 +132,7 @@ function encrypt_file() {
     local file_to_encrypt="$1"
     local encrypted_file="$2"
     local password="$3"
-    openssl enc -a -aes-256-cbc -md md5 -salt -in ${file_to_encrypt} -out ${encrypted_file} -k ${password}
+    openssl enc -a -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 -salt -in ${file_to_encrypt} -out ${encrypted_file} -k ${password}
     echo -n "🔐 "
 }
 
@@ -140,7 +140,7 @@ function decrypt_file() {
     local encrypted_file="$1"
     local decrypted_file="$2"
     local password="$3"
-    openssl enc -a -aes-256-cbc -md md5 -salt -d -in ${encrypted_file} -out ${decrypted_file} -k ${password}
+    openssl enc -a -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 -salt -d -in ${encrypted_file} -out ${decrypted_file} -k ${password}
     echo -n "🔓 "
 }
 
