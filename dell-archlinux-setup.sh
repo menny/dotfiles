@@ -1,68 +1,62 @@
 #!/bin/bash
-set -e
+set -ex
 
-ACTUAL_USER="$1"
-if [[ -z "$ACTUAL_USER" ]]; then
-	echo "First arg is the actual username to install stuff on"
+# must run this script as regular user
+if [[ "$USER" == "root" ]]; then
+	echo "Run this script as regular user, not a super-user"
 	exit 1
 fi
 
-function install_from_git() {
-	local git_url="$1"
-	local temp_git=$(mktemp -d)
-	chown -R "$ACTUAL_USER" "$temp_git"
-	runuser -u "$ACTUAL_USER" -- git clone "$git_url" "$temp_git"
-	pushd "$temp_git"
-	runuser -u "$ACTUAL_USER" -- makepkg -sri
-	pacman -U $(ls *.tar.zst)
-	popd
-}
 
-pacman -Sy archlinux-keyring
-pacman -S --needed base-devel git
-pacman -Sy openssl wget curl go
-pacman -Sy jdk11-openjdk
-pacman -Sy python3
+sudo pacman -Sy archlinux-keyring
+sudo pacman -S --needed base-devel git
+sudo pacman -Sy openssl wget curl go jdk11-openjdk python3 clang
 
-install_from_git https://aur.archlinux.org/google-chrome.git
-install_from_git https://aur.archlinux.org/bazelisk.git
-install_from_git https://aur.archlinux.org/snapd.git
+yay_git=$(mktemp -d)
+git clone https://aur.archlinux.org/yay-git.git "$yay_git"
+pushd "$yay_git"
+makepkg -sri
+popd
 
-systemctl enable --now snapd.socket
-ln -s /var/lib/snapd/snap /snap
+yay -S google-chrome
+yay -S bazelisk
+yay -S snapd
+
+sudo systemctl enable --now snapd.socket
+sudo ln -s /var/lib/snapd/snap /snap
 snap install snap-store
 
-echo "HibernateState=disk" > /etc/systemd/sleep.conf
-echo "HibernateMode=shutdown" >> /etc/systemd/sleep.conf
-echo "options snd-hda-intel model=auto" > /etc/modprobe.d/fix-audio-input.conf
-echo "AutoEnable=true" >> /etc/bluetooth/main.conf
+sudo echo "HibernateState=disk" > /etc/systemd/sleep.conf
+sudo echo "HibernateMode=shutdown" >> /etc/systemd/sleep.conf
+sudo echo "options snd-hda-intel model=auto" > /etc/modprobe.d/fix-audio-input.conf
+sudo echo "AutoEnable=true" >> /etc/bluetooth/main.conf
 
-pacman -Sy fwupd gnome-firmware
-pacman -Sy networkmanager wireless_tools
-pacman -Sy bluez bluez-utils
-pacman -Sy xorg-xwayland
-pacman -Sy wmctrl xdotool imagemagick
-pacman -Sy zsh zsh-completions
-pacman -Sy cups cups-pdf
-chsh -s $(which zsh) "$ACTUAL_USER"
+sudo pacman -Sy fwupd gnome-firmware \
+	networkmanager wireless_tools \
+	bluez bluez-utils \
+	xorg-xwayland \
+	wmctrl xdotool imagemagick \
+	zsh zsh-completions \
+	cups cups-pdf
+chsh -s $(which zsh)
 #homectl update --shell=$(which zsh) "$ACTUAL_USER"
-pacman -S nvidia nvidia-utils nvidia-settings xorg-server-devel opencl-nvidia
-bash -c "echo blacklist nouveau > /etc/modprobe.d/blacklist-nvidia-nouveau.conf"
-pacman -Sy gnome-themes-extra
+sudo pacman -S nvidia nvidia-utils nvidia-settings xorg-server-devel opencl-nvidia
+sudo bash -c "echo blacklist nouveau > /etc/modprobe.d/blacklist-nvidia-nouveau.conf"
+sudo pacman -Sy gnome-themes-extra
 
-systemctl start bluetooth.service
-systemctl enable bluetooth.service
+sudo systemctl start bluetooth.service
+sudo systemctl enable bluetooth.service
 
-systemctl disable cups.service
-systemctl start cups.socket
-systemctl enable cups.socket
+sudo systemctl disable cups.service
+sudo systemctl start cups.socket
+sudo systemctl enable cups.socket
 
-pacman -Syyu
+sudo pacman -Syyu
 
-runuser -u "$ACTUAL_USER" -- git clone https://github.com/jenv/jenv.git ~/.jenv
-runuser -u "$ACTUAL_USER" -- snap install slack --classic
-runuser -u "$ACTUAL_USER" -- snap install spotify
-runuser -u "$ACTUAL_USER" -- snap install code --classic
+git clone https://github.com/jenv/jenv.git ~/.jenv
+snap install slack --classic
+snap install spotify
+snap install code --classic
 snap alias code code
 
-runuser -u "$ACTUAL_USER" -- wget --no-check-certificate http://install.ohmyz.sh -O - | sh
+wget --no-check-certificate http://install.ohmyz.sh -O - | sh
