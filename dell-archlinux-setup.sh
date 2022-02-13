@@ -7,6 +7,7 @@ if [[ "$USER" == "root" ]]; then
 	exit 1
 fi
 
+USER_HOME_DIR="$(eval echo ~$USER)"
 
 sudo pacman -Sy archlinux-keyring
 sudo pacman -S --needed base-devel git
@@ -69,3 +70,12 @@ snap install code --classic
 snap alias code code
 
 wget --no-check-certificate http://install.ohmyz.sh -O - | sh
+
+mkdir -p "${USER_HOME_DIR}/dev/menny"
+git clone https://github.com/menny/dotfiles.git "${USER_HOME_DIR}/dev/menny/dotfiles"
+pushd "${USER_HOME_DIR}/dev/menny/dotfiles"
+./dotfiles restore
+git remote remove origin
+git remote add origin git@github.com:menny/dotfiles.git
+git fetch origin
+popd
