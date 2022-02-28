@@ -94,3 +94,5 @@ git remote remove origin
 git remote add origin git@github.com:menny/dotfiles.git
 git fetch origin
 popd
+
+sudo fwupdmgr refresh --force && sudo fwupdmgr update

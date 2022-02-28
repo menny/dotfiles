@@ -1,6 +1,7 @@
 [alias]
 	co = checkout
 	stts = status
+	pr-co = "!git_pr_checkout() { git fetch $1 pull/$2/head:pr_$1_number_$2; git checkout pr_$1_number_$2; }; git_pr_checkout"
 [user]
 	name = Menny Even Danan
 	signingkey = DD9304645C8EC032

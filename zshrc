@@ -134,10 +134,9 @@ export PATH="$PATH:$HOME/bin"
 
 alias gitclean="git clean -f -d && git reset --hard HEAD"
 alias open="xdg-open"
+alias update-all="yay -Syyu && sudo fwupdmgr refresh --force && sudo fwupdmgr update"
 
 source "$HOME/.secrets_rc"
-
-#ssh-add -K
 
 export PATH="/usr/local/opt/ruby/bin:$PATH"
 export PATH="$PATH:/usr/local/go/bin"
