@@ -11,7 +11,7 @@ USER_HOME_DIR="$(eval echo ~$USER)"
 
 sudo pacman -Syy archlinux-keyring
 sudo pacman -S --needed base-devel git git-lfs
-sudo pacman -S openssl wget curl go jdk11-openjdk python3 clang
+sudo pacman -S openssl wget curl go jdk11-openjdk python3 python-pip clang
 
 yay_git=$(mktemp -d)
 git clone https://aur.archlinux.org/yay-git.git "$yay_git"
@@ -39,7 +39,7 @@ sudo pacman -Syy fwupd gnome-firmware \
 	usbutils \
 	bluez bluez-utils \
 	wmctrl xdotool imagemagick \
-	shellcheck \
+	shellcheck yamllint \
 	zsh zsh-completions \
 	cups cups-pdf
 chsh -s $(which zsh)
