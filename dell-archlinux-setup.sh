@@ -77,6 +77,8 @@ sudo systemctl enable bluetooth.service
 sudo systemctl disable cups.service
 sudo systemctl enable cups.socket
 
+yay -S chrome-gnome-shell
+
 yay -Syyu
 
 git clone https://github.com/jenv/jenv.git ~/.jenv
@@ -97,6 +99,8 @@ git fetch origin
 popd
 
 sudo fwupdmgr refresh --force && sudo fwupdmgr update
+
+zsh android-sdk-setup.sh
 
 read -p "You must reboot to have everything taken effect. Do you want to reboot now? y/n" REBOOT
 if [[ "$REBOOT" == "y" ]]; then

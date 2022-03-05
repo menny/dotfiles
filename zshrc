@@ -129,7 +129,7 @@ export DAILY_GRADLE_RESTART=1
 
 export ANDROID_SDK="$HOME/dev/sdk"
 export ANDROID_HOME="$HOME/dev/sdk"
-export PATH="$PATH:$ANDROID_HOME/cmdline-tools/tools:$ANDROID_HOME/cmdline-tools/tools/bin"
+export PATH="$PATH:$ANDROID_HOME/cmdline-tools/latest/tools:$ANDROID_HOME/cmdline-tools/latest/bin"
 export PATH="$PATH:$ANDROID_HOME/platform-tools"
 
 export PATH="$PATH:$HOME/bin"
