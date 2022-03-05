@@ -1,6 +1,7 @@
 encrypted:gnupg:/home/menny/signatures/signatures_gnupg.tar.bz2
 encrypted:secrets_rc:/home/menny/.secrets_rc
 encrypted:ssh:/home/menny/signatures/signatures_ssh.tar.bz2
+plain:chrome-flags:/home/menny/.config/chrome-beta-flags.conf
 plain:git-config-global:/home/menny/.gitconfig
 plain:git-personal:/home/menny/.gitconfig-personal
 plain:git-spotify:/home/menny/.gitconfig-spotify

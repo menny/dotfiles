@@ -59,12 +59,12 @@ function add_dotfile() {
     local encrypted=${3:-plain}
     local password=${4}
     if [[ -z "${dotfile}" ]] || [[ -z "${name}" ]] ; then
-        echo "ERROR:"
+        echo "X"
         echo "ERROR: missing arguments. dotfiles.sh add/add-enc [full/path/to/.dotfile] [backup-name]"
         exit 1
     fi
     if [[ "${dotfile:0:1}" != "/" ]]; then
-        echo "ERROR:"
+        echo "X"
         echo "ERROR: Please, use absolute paths."
         exit 1
     fi
