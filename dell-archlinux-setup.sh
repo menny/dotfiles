@@ -11,7 +11,7 @@ USER_HOME_DIR="$(eval echo ~$USER)"
 
 sudo pacman -Syy archlinux-keyring
 sudo pacman -S --needed base-devel git git-lfs
-sudo pacman -S openssl wget curl go jdk11-openjdk python3 python-pip clang
+sudo pacman -S openssl wget curl go jdk11-openjdk python3 python-pip clang gnupg
 
 yay_git=$(mktemp -d)
 git clone https://aur.archlinux.org/yay-git.git "$yay_git"
@@ -29,10 +29,10 @@ sudo systemctl enable --now snapd.socket
 sudo ln -s /var/lib/snapd/snap /snap
 snap install snap-store
 
-sudo echo "HibernateState=disk" > /etc/systemd/sleep.conf
-sudo echo "HibernateMode=shutdown" >> /etc/systemd/sleep.conf
-sudo echo "options snd-hda-intel model=auto" > /etc/modprobe.d/fix-audio-input.conf
-sudo echo "AutoEnable=true" >> /etc/bluetooth/main.conf
+sudo sh -c 'echo "HibernateState=disk" > /etc/systemd/sleep.conf'
+sudo sh -c 'echo "HibernateMode=shutdown" >> /etc/systemd/sleep.conf'
+sudo sh -c 'echo "options snd-hda-intel model=auto" > /etc/modprobe.d/fix-audio-input.conf'
+sudo sh -c 'echo "AutoEnable=true" >> /etc/bluetooth/main.conf'
 
 sudo pacman -Syy fwupd gnome-firmware \
 	networkmanager wireless_tools \
@@ -54,7 +54,8 @@ sudo bash -c "echo 'blacklist nouveau' > /etc/modprobe.d/blacklist-nvidia-nouvea
 sudo gpasswd -a $USER bumblebee
 sudo systemctl enable bumblebeed.service
 
-sudo echo "[Trigger]
+sudo mkdir -p /etc/pacman.d/hooks
+sudo sh -c 'echo "[Trigger]
 Operation=Install
 Operation=Upgrade
 Operation=Remove
@@ -65,7 +66,7 @@ Target=nvidia
 Description=Update Nvidia module in initcpio
 Depends=mkinitcpio
 When=PostTransaction
-Exec=/usr/bin/mkinitcpio -P" > /etc/pacman.d/hooks/nvidia.hook
+Exec=/usr/bin/mkinitcpio -P" > /etc/pacman.d/hooks/nvidia.hook'
 
 sudo pacman -S gnome-themes-extra
 sudo pacman -S ttf-dejavu
@@ -76,23 +77,29 @@ sudo systemctl enable bluetooth.service
 sudo systemctl disable cups.service
 sudo systemctl enable cups.socket
 
-sudo yay -Syyu
+yay -Syyu
 
 git clone https://github.com/jenv/jenv.git ~/.jenv
 snap install slack --classic
 snap install spotify
 snap install code --classic
-snap alias code code
+sudo snap alias code vscode
 
 wget --no-check-certificate http://install.ohmyz.sh -O - | sh
 
 mkdir -p "${USER_HOME_DIR}/dev/menny"
 git clone https://github.com/menny/dotfiles.git "${USER_HOME_DIR}/dev/menny/dotfiles"
+"${USER_HOME_DIR}/dev/menny/dotfiles/dotfiles" restore
 pushd "${USER_HOME_DIR}/dev/menny/dotfiles"
-./dotfiles restore
 git remote remove origin
 git remote add origin git@github.com:menny/dotfiles.git
 git fetch origin
 popd
 
 sudo fwupdmgr refresh --force && sudo fwupdmgr update
+
+read -p "You must reboot to have everything taken effect. Do you want to reboot now? y/n" REBOOT
+if [[ "$REBOOT" == "y" ]]; then
+	echo "Rebooting..."
+	sudo reboot
+fi

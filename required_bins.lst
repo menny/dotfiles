@@ -1,8 +1,6 @@
 bazel
-code
 convert
 git
-jenv
 openssl
 wget
 zsh

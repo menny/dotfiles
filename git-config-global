@@ -18,7 +18,7 @@
 [core]
 	autocrlf = input
 [gpg]
-	program = gpg
+	program = /usr/bin/gpg
 [commit]
 	gpgsign = true
 [filter "lfs"]

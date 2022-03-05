@@ -170,6 +170,7 @@ function restore_links() {
                 fi
             fi
             #restoring link
+            mkdir -p $(dirname ${actual_file}) || tru
             if [[ "${encrypted}" == "encrypted" ]]; then
                 local decrypted_file=${repo_folder}/decrypted_dotfiles/decrypted_${repo_namefile}
                 mkdir -p $(dirname ${decrypted_file}) || true
