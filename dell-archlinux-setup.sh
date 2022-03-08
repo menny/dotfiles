@@ -20,6 +20,7 @@ makepkg -sri
 popd
 
 yay -Syy google-chrome
+yay -S globalprotect-openconnect-git
 
 yay -S bazelisk
 sudo ln -s $(which bazel) /usr/bin/bazelisk
@@ -77,6 +78,10 @@ sudo systemctl enable bluetooth.service
 sudo systemctl disable cups.service
 sudo systemctl enable cups.socket
 
+sudo pacman -S flatpak
+flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrep
+flatpak install org.gnome.Extensions
+
 yay -S chrome-gnome-shell
 
 yay -Syyu
@@ -101,6 +106,13 @@ popd
 sudo fwupdmgr refresh --force && sudo fwupdmgr update
 
 zsh android-sdk-setup.sh
+
+sudo bootctl list
+read -p "Enter kernel ID to use in boot. Empty to skip." KERNEL_ID
+if [[ ! -z "$KERNEL_ID" ]]; then
+	sudo bootctl set-default "$KERNEL_ID"
+	sudo bootctl list
+fi
 
 read -p "You must reboot to have everything taken effect. Do you want to reboot now? y/n" REBOOT
 if [[ "$REBOOT" == "y" ]]; then
