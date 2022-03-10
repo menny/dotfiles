@@ -42,7 +42,14 @@ sudo pacman -Syy fwupd gnome-firmware \
 	wmctrl xdotool imagemagick \
 	shellcheck yamllint \
 	zsh zsh-completions \
-	cups cups-pdf
+	cups cups-pdf \
+	man-db man-pages
+
+sudo pacman -S docker
+sudo usermod -a -G docker $USER
+sudo systemctl enable docker.service
+sudo systemctl start docker.service
+
 chsh -s $(which zsh)
 #homectl update --shell=$(which zsh)
 sudo pacman -S nvidia nvidia-dkms \
@@ -83,6 +90,8 @@ flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.f
 flatpak install org.gnome.Extensions
 
 yay -S chrome-gnome-shell
+yay -S keybase-bin
+run_keybase
 
 yay -Syyu
 
@@ -90,7 +99,6 @@ git clone https://github.com/jenv/jenv.git ~/.jenv
 snap install slack --classic
 snap install spotify
 snap install code --classic
-sudo snap alias code vscode
 
 wget --no-check-certificate http://install.ohmyz.sh -O - | sh
 
