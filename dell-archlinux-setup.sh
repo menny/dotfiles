@@ -77,7 +77,8 @@ When=PostTransaction
 Exec=/usr/bin/mkinitcpio -P" > /etc/pacman.d/hooks/nvidia.hook'
 
 sudo pacman -S gnome-themes-extra
-sudo pacman -S ttf-dejavu
+sudo pacman -S ttf-dejavu noto-fonts ttf-ms-fonts noto-fonts-emoji
+fc-cache -vf
 
 sudo systemctl start bluetooth.service
 sudo systemctl enable bluetooth.service
