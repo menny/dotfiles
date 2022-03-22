@@ -156,4 +156,4 @@ if [ -f '/home/menny/dev/google-cloud-sdk/path.zsh.inc' ]; then . '/home/menny/d
 if [ -f '/home/menny/dev/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/menny/dev/google-cloud-sdk/completion.zsh.inc'; fi
 
 # This tells Bazel to use clang when building C code. Also, it's needed for swift support.
-export CC=clang
+# export CC=clang
