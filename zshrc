@@ -133,6 +133,7 @@ export PATH="$PATH:$ANDROID_HOME/cmdline-tools/latest/tools:$ANDROID_HOME/cmdlin
 export PATH="$PATH:$ANDROID_HOME/platform-tools"
 
 export PATH="$PATH:$HOME/bin"
+export PATH="$PATH:$HOME/.local/bin"
 
 alias gitclean="git clean -f -d && git reset --hard HEAD"
 alias open="xdg-open"
@@ -149,11 +150,11 @@ export PATH="/usr/share/swift/usr/bin:$PATH"
 export PATH="$PATH:$HOME/dev/menny/dotfiles"
 dotfiles noop
 
+# This tells Bazel to use clang when building C code. Also, it's needed for swift support.
+# export CC=clang
+
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/home/menny/dev/google-cloud-sdk/path.zsh.inc' ]; then . '/home/menny/dev/google-cloud-sdk/path.zsh.inc'; fi
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/home/menny/dev/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/menny/dev/google-cloud-sdk/completion.zsh.inc'; fi
-
-# This tells Bazel to use clang when building C code. Also, it's needed for swift support.
-# export CC=clang
