@@ -123,6 +123,9 @@ if [[ ! -z "$KERNEL_ID" ]]; then
 	sudo bootctl list
 fi
 
+echo "*** Looking for lm-sensors (fan-control). This might be better to repeat after reboot!"
+sudo sensors-detect
+
 read -p "You must reboot to have everything taken effect. Do you want to reboot now? y/n" REBOOT
 if [[ "$REBOOT" == "y" ]]; then
 	echo "Rebooting..."
