@@ -52,7 +52,7 @@ sudo systemctl start docker.service
 
 chsh -s $(which zsh)
 #homectl update --shell=$(which zsh)
-sudo pacman -S nvidia nvidia-dkms \
+sudo pacman -S nvidia-dkms \
 	libxnvctrl nvidia-utils nvidia-settings \
 	libvdpau opencl-nvidia \
 	ffnvcodec-headers \
