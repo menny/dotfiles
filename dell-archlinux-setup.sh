@@ -90,7 +90,7 @@ sudo pacman -S flatpak
 flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrep
 flatpak install org.gnome.Extensions
 
-yay -S chrome-gnome-shell
+yay -S gnome-browser-connector
 yay -S keybase-bin
 run_keybase
 
