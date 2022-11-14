@@ -56,6 +56,7 @@ sudo pacman -S nvidia-dkms \
 	libxnvctrl nvidia-utils nvidia-settings \
 	libvdpau opencl-nvidia \
 	ffnvcodec-headers \
+	libgda \
 	xorg-server-devel xorg-xwayland egl-wayland \
 	primus_vk bumblebee mesa nvidia-prime
 sudo bash -c "echo 'blacklist nouveau' > /etc/modprobe.d/blacklist-nvidia-nouveau.conf"
