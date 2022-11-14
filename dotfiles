@@ -6,10 +6,8 @@ TMPDIR="$(mktemp -d)"
 HOME="$(eval echo ~$USER)"
 
 #must run from the HOME folder
-if [[ "$HOME" != "$(pwd)" ]]; then
-    echo "This script must be executed from the user home directory ($HOME)!"
-    exit 1
-fi
+pushd "$HOME" > /dev/null
+trap "popd > /dev/null" EXIT
 
 function source_script() {
     local title="$1"
