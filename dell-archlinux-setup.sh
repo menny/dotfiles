@@ -87,6 +87,10 @@ sudo systemctl enable bluetooth.service
 sudo systemctl disable cups.service
 sudo systemctl enable cups.socket
 
+sudo systemctl enable nvidia-suspend.service
+sudo systemctl enable nvidia-hibernate.service
+sudo systemctl enable nvidia-resume.service
+
 sudo pacman -S flatpak
 flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrep
 flatpak install org.gnome.Extensions
