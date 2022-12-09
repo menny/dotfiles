@@ -117,7 +117,7 @@ fi
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 export PATH="$HOME/.jenv/bin:$PATH"
-eval "$(jenv init -)"
+#eval "$(jenv init -)"
 #jenv enable-plugin grails
 #jenv enable-plugin groovy
 #jenv enable-plugin maven
@@ -138,6 +138,7 @@ export PATH="$PATH:$HOME/.local/bin"
 alias gitclean="git clean -f -d && git reset --hard HEAD"
 alias open="xdg-open"
 alias update-all="yay -Syyu && sudo fwupdmgr refresh --force && sudo fwupdmgr update"
+alias code="flatpak run com.visualstudio.code"
 
 source "$HOME/.secrets_rc"
 
