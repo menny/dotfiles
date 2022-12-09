@@ -3,19 +3,19 @@ set -ex
 
 USER_HOME_DIR="$(eval echo ~$USER)"
 
-# pushd "$USER_HOME_DIR/dev/menny"
-# git clone git@github.com:menny/AnySoftKeyboard.git
-# pushd AnySoftKeyboard
-# git remote add upstream git@github.com:AnySoftKeyboard/AnySoftKeyboard.git
-# git pull upstream main
-# git push origin main
-# popd
-# popd
+pushd "$USER_HOME_DIR/dev/menny"
+git clone git@github.com:menny/AnySoftKeyboard.git
+pushd AnySoftKeyboard
+git remote add upstream git@github.com:AnySoftKeyboard/AnySoftKeyboard.git
+git pull upstream main
+git push origin main
+popd
+popd
 
-# mkdir -p "$USER_HOME_DIR/dev/sdk/temp-tools"
-# wget https://dl.google.com/android/repository/commandlinetools-linux-8092744_latest.zip -O "$USER_HOME_DIR/android-command-line-tools.zip"
-# unzip "$USER_HOME_DIR/android-command-line-tools.zip" -d "$USER_HOME_DIR/dev/sdk/temp-tools"
-# rm "$USER_HOME_DIR/android-command-line-tools.zip"
+mkdir -p "$USER_HOME_DIR/dev/sdk/temp-tools"
+wget https://dl.google.com/android/repository/commandlinetools-linux-8092744_latest.zip -O "$USER_HOME_DIR/android-command-line-tools.zip"
+unzip "$USER_HOME_DIR/android-command-line-tools.zip" -d "$USER_HOME_DIR/dev/sdk/temp-tools"
+rm "$USER_HOME_DIR/android-command-line-tools.zip"
 
 "$USER_HOME_DIR/dev/sdk/temp-tools/cmdline-tools/bin/sdkmanager" --sdk_root="$USER_HOME_DIR/dev/sdk" \
 	"sources;android-31" "platforms;android-31" \

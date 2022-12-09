@@ -138,7 +138,6 @@ export PATH="$PATH:$HOME/.local/bin"
 alias gitclean="git clean -f -d && git reset --hard HEAD"
 alias open="xdg-open"
 alias update-all="yay -Syyu && sudo fwupdmgr refresh --force && sudo fwupdmgr update"
-alias code="flatpak run com.visualstudio.code"
 
 source "$HOME/.secrets_rc"
 

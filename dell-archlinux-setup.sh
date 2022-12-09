@@ -36,7 +36,7 @@ sudo sh -c 'echo "options snd-hda-intel model=auto" > /etc/modprobe.d/fix-audio-
 sudo sh -c 'echo "AutoEnable=true" >> /etc/bluetooth/main.conf'
 
 sudo pacman -Syy fwupd gnome-firmware \
-	networkmanager wireless_tools \
+	networkmanager wireless_tools gnome-tweaks gnome-themes-extra \
 	usbutils \
 	bluez bluez-utils \
 	wmctrl xdotool imagemagick \
@@ -78,7 +78,7 @@ When=PostTransaction
 Exec=/usr/bin/mkinitcpio -P" > /etc/pacman.d/hooks/nvidia.hook'
 
 sudo pacman -S gnome-themes-extra
-sudo pacman -S ttf-dejavu noto-fonts ttf-ms-fonts noto-fonts-emoji
+sudo pacman -S ttf-dejavu noto-fonts noto-fonts-emoji
 fc-cache -vf
 
 sudo systemctl start bluetooth.service
@@ -114,12 +114,9 @@ git clone https://github.com/menny/dotfiles.git "${USER_HOME_DIR}/dev/menny/dotf
 pushd "${USER_HOME_DIR}/dev/menny/dotfiles"
 git remote remove origin
 git remote add origin git@github.com:menny/dotfiles.git
-git fetch origin
 popd
 
 sudo fwupdmgr refresh --force && sudo fwupdmgr update
-
-zsh android-sdk-setup.sh
 
 sudo bootctl list
 read -p "Enter kernel ID to use in boot. Empty to skip." KERNEL_ID
@@ -131,6 +128,9 @@ fi
 echo "*** Looking for lm-sensors (fan-control). This might be better to repeat after reboot!"
 sudo sensors-detect
 
+echo ""
+echo "Setup completed!"
+echo "Run additional setup scripts after reboot."
 read -p "You must reboot to have everything taken effect. Do you want to reboot now? y/n" REBOOT
 if [[ "$REBOOT" == "y" ]]; then
 	echo "Rebooting..."
