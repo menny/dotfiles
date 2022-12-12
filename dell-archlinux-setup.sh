@@ -9,6 +9,10 @@ fi
 
 USER_HOME_DIR="$(eval echo ~$USER)"
 
+#making downloads faster
+sudo sh -c 'grep -v "ParallelDownloads" /etc/pacman.conf > tmpfile && mv tmpfile /etc/pacman.conf'
+sudo sh -c 'echo "ParallelDownloads = 5" >> /etc/pacman.conf'
+
 sudo pacman -Syy archlinux-keyring
 sudo pacman -S --needed base-devel git git-lfs
 sudo pacman -S openssl wget curl go jdk11-openjdk python3 python-pip clang gnupg
@@ -41,7 +45,7 @@ sudo pacman -Syy fwupd gnome-firmware \
 	bluez bluez-utils \
 	wmctrl xdotool imagemagick \
 	shellcheck yamllint \
-	zsh zsh-completions \
+	zsh zsh-completions nano \
 	cups cups-pdf \
 	man-db man-pages
 
@@ -94,6 +98,7 @@ sudo systemctl enable nvidia-resume.service
 sudo pacman -S flatpak
 flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrep
 flatpak install org.gnome.Extensions
+flatpak install com.slack.Slack
 
 yay -S gnome-browser-connector
 yay -S keybase-bin
@@ -102,7 +107,6 @@ run_keybase
 yay -Syyu
 
 git clone https://github.com/jenv/jenv.git ~/.jenv
-snap install slack --classic
 snap install spotify
 snap install code --classic
 
