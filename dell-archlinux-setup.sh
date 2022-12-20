@@ -13,7 +13,7 @@ USER_HOME_DIR="$(eval echo ~$USER)"
 sudo sh -c 'grep -v "ParallelDownloads" /etc/pacman.conf > tmpfile && mv tmpfile /etc/pacman.conf'
 sudo sh -c 'echo "ParallelDownloads = 5" >> /etc/pacman.conf'
 
-sudo pacman -Syy archlinux-keyring
+sudo pacman -Syy archlinux-keyring gnome-keyring
 sudo pacman -S --needed base-devel git git-lfs
 sudo pacman -S openssl wget curl go jdk11-openjdk python3 python-pip clang gnupg
 
@@ -99,10 +99,17 @@ sudo pacman -S flatpak
 flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrep
 flatpak install org.gnome.Extensions
 flatpak install com.slack.Slack
+flatpak install com.raggesilver.BlackBox
+flatpak install org.openscad.OpenSCAD
+flatpak install com.ultimaker.cura
 
 yay -S gnome-browser-connector
 yay -S keybase-bin
 run_keybase
+
+# Epson printer
+yay -S epson-inkjet-printer-escpr2
+sudo pacman system-config-printer
 
 yay -Syyu
 
