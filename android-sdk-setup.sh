@@ -28,4 +28,3 @@ tar -xf "$USER_HOME_DIR/android_studio.tar.gz" -C "$USER_HOME_DIR/dev/"
 rm "$USER_HOME_DIR/android_studio.tar.gz"
 
 "$USER_HOME_DIR/dev/android-studio/bin/studio.sh"
-

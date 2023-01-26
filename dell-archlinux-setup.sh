@@ -15,7 +15,8 @@ sudo sh -c 'echo "ParallelDownloads = 5" >> /etc/pacman.conf'
 
 sudo pacman -Syy archlinux-keyring gnome-keyring
 sudo pacman -S --needed base-devel git git-lfs
-sudo pacman -S openssl wget curl go jdk11-openjdk python3 python-pip clang gnupg
+sudo pacman -S openssl wget curl go jdk11-openjdk jdk17-openjdk python3 python-pip clang gnupg
+sudo pacman -S ruby rubygems
 
 yay_git=$(mktemp -d)
 git clone https://aur.archlinux.org/yay-git.git "$yay_git"
@@ -113,7 +114,12 @@ sudo pacman system-config-printer
 
 yay -Syyu
 
-git clone https://github.com/jenv/jenv.git ~/.jenv
+git clone https://github.com/jenv/jenv.git "${USER_HOME_DIR}/.jenv"
+"${USER_HOME_DIR}/.jenv/bin/jenv" init -
+"${USER_HOME_DIR}/.jenv/bin/jenv" add /usr/lib/jvm/java-17-openjdk
+"${USER_HOME_DIR}/.jenv/bin/jenv" add /usr/lib/jvm/java-11-openjdk
+"${USER_HOME_DIR}/.jenv/bin/jenv" global 17
+
 snap install spotify
 snap install code --classic
 

@@ -117,13 +117,13 @@ fi
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 export PATH="$HOME/.jenv/bin:$PATH"
-#eval "$(jenv init -)"
+eval "$(jenv init -)"
 #jenv enable-plugin grails
 #jenv enable-plugin groovy
 #jenv enable-plugin maven
 #jenv enable-plugin gradle
 #jenv enable-plugin sbt
-#jenv enable-plugin export
+jenv enable-plugin export
 
 export DAILY_GRADLE_RESTART=1
 
@@ -145,6 +145,10 @@ export PATH="/usr/local/opt/ruby/bin:$PATH"
 export PATH="$PATH:/usr/local/go/bin"
 export PATH="$PATH:$(go env GOPATH)/bin"
 export PATH="/usr/share/swift/usr/bin:$PATH"
+
+#ruby
+export GEM_HOME="$(ruby -e 'puts Gem.user_dir')"
+export PATH="$PATH:$GEM_HOME/bin"
 
 #dotfiles
 export PATH="$PATH:$HOME/dev/menny/dotfiles"
