@@ -69,9 +69,7 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=( \
-  #git-prompt \
-  )
+plugins=( )
 
 source $ZSH/oh-my-zsh.sh
 
@@ -79,18 +77,6 @@ source $ZSH/oh-my-zsh.sh
 export AUTO_NOTIFY_THRESHOLD=30
 export AUTO_NOTIFY_IGNORE=("find" "grep" "less" "pico" "nano")
 export AUTO_NOTIFY_EXPIRE_TIME=4000
-
-#These are for notify zsh plugin
-# zstyle ':notify:*' error-title "Shell command failed!!!"
-# zstyle ':notify:*' success-title "Shell command finished (in #{time_elapsed} seconds)"
-# zstyle ':notify:*' activate-terminal yes
-# zstyle ':notify:*' app-name sh
-# zstyle ':notify:*' always-notify-on-failure yes
-# zstyle ':notify:*' blacklist-regex 'find|grep|less|pico|nano'
-
-# User configuration
-
-# export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
@@ -118,12 +104,6 @@ fi
 
 export PATH="$HOME/.jenv/bin:$PATH"
 eval "$(jenv init -)"
-#jenv enable-plugin grails
-#jenv enable-plugin groovy
-#jenv enable-plugin maven
-#jenv enable-plugin gradle
-#jenv enable-plugin sbt
-jenv enable-plugin export
 
 export DAILY_GRADLE_RESTART=1
 
@@ -162,3 +142,11 @@ if [ -f '/home/menny/dev/google-cloud-sdk/path.zsh.inc' ]; then . '/home/menny/d
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/home/menny/dev/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/menny/dev/google-cloud-sdk/completion.zsh.inc'; fi
+
+# pnpm
+export PNPM_HOME="/home/menny/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end

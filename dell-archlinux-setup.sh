@@ -116,9 +116,12 @@ yay -Syyu
 
 git clone https://github.com/jenv/jenv.git "${USER_HOME_DIR}/.jenv"
 "${USER_HOME_DIR}/.jenv/bin/jenv" init -
+
 "${USER_HOME_DIR}/.jenv/bin/jenv" add /usr/lib/jvm/java-17-openjdk
 "${USER_HOME_DIR}/.jenv/bin/jenv" add /usr/lib/jvm/java-11-openjdk
 "${USER_HOME_DIR}/.jenv/bin/jenv" global 17
+
+"${USER_HOME_DIR}/.jenv/bin/jenv" enable-plugin export
 
 snap install spotify
 snap install code --classic
