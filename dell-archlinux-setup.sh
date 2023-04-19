@@ -50,7 +50,7 @@ sudo pacman -Syy fwupd gnome-firmware \
 	cups cups-pdf \
 	man-db man-pages
 
-sudo pacman -S docker
+sudo pacman -S docker docker-compose docker-buildx
 sudo usermod -a -G docker $USER
 sudo systemctl enable docker.service
 sudo systemctl start docker.service
