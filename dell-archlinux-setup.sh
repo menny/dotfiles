@@ -14,6 +14,7 @@ sudo sh -c 'grep -v "ParallelDownloads" /etc/pacman.conf > tmpfile && mv tmpfile
 sudo sh -c 'echo "ParallelDownloads = 5" >> /etc/pacman.conf'
 
 sudo pacman -Syy archlinux-keyring gnome-keyring
+sudo pacman -S linux-zen linux-zen-headers
 sudo pacman -S --needed base-devel git git-lfs
 sudo pacman -S openssl wget curl go jdk11-openjdk jdk17-openjdk python3 python-pip clang gnupg
 sudo pacman -S ruby rubygems
