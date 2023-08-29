@@ -111,7 +111,7 @@ run_keybase
 
 # Epson printer
 yay -S epson-inkjet-printer-escpr2
-sudo pacman system-config-printer
+sudo pacman -S system-config-printer
 
 yay -Syyu
 
