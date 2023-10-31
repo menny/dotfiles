@@ -46,7 +46,7 @@ sudo pacman -Syy fwupd gnome-firmware \
 	usbutils \
 	bluez bluez-utils \
 	wmctrl xdotool imagemagick \
-	shellcheck yamllint \
+	shellcheck yamllint jq \
 	zsh zsh-completions nano \
 	cups cups-pdf \
 	man-db man-pages

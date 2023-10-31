@@ -4,11 +4,10 @@ set -ex
 USER_HOME_DIR="$(eval echo ~$USER)"
 
 pushd "$USER_HOME_DIR/dev/menny"
-git clone git@github.com:menny/AnySoftKeyboard.git
+git clone git@github.com:AnySoftKeyboard/AnySoftKeyboard.git
 pushd AnySoftKeyboard
 git remote add upstream git@github.com:AnySoftKeyboard/AnySoftKeyboard.git
-git pull upstream main
-git push origin main
+git remote add menny git@github.com:menny/AnySoftKeyboard.git
 popd
 popd
 
@@ -18,7 +17,7 @@ unzip "$USER_HOME_DIR/android-command-line-tools.zip" -d "$USER_HOME_DIR/dev/sdk
 rm "$USER_HOME_DIR/android-command-line-tools.zip"
 
 "$USER_HOME_DIR/dev/sdk/temp-tools/cmdline-tools/bin/sdkmanager" --sdk_root="$USER_HOME_DIR/dev/sdk" \
-	"sources;android-31" "platforms;android-31" \
+	"sources;android-34" "platforms;android-34" \
 	"platform-tools" "patcher;v4" "cmdline-tools;latest" \
 
 rm -rf "$USER_HOME_DIR/dev/sdk/temp-tools"

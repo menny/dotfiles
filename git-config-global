@@ -33,3 +33,4 @@
 	defaultBranch = main
 [safe]
 	directory = /home/menny/dev/menny/mabel
+	directory = /home/menny/dev/menny/AnySoftKeyboard
