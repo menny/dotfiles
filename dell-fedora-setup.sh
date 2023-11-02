@@ -8,7 +8,6 @@ if [[ "$USER" == "root" ]]; then
 fi
 USER_HOME_DIR="$(eval echo ~$USER)"
 
-if false; then
 # making DNF faster
 sudo sh -c 'echo "max_parallel_downloads=5" >> /etc/dnf/dnf.conf'
 sudo sh -c 'echo "fastestmirror=True" >> /etc/dnf/dnf.conf'
@@ -36,7 +35,7 @@ sudo ln -s "$(go env GOPATH)/bin/bazelisk" "/usr/bin/bazel"
 
 sudo dnf install -y snapd
 sudo systemctl enable --now snapd.socket
-sleep 10
+sudo systemctl start --now snapd.socket
 sudo ln -s /var/lib/snapd/snap /snap
 sudo snap install snap-store
 
@@ -113,8 +112,6 @@ snap install code --classic
 
 wget --no-check-certificate http://install.ohmyz.sh -O - | sh
 
-ssh-keygen -R github.com
-
 mkdir -p "${USER_HOME_DIR}/dev/menny"
 git clone https://github.com/menny/dotfiles.git "${USER_HOME_DIR}/dev/menny/dotfiles"
 "${USER_HOME_DIR}/dev/menny/dotfiles/dotfiles" restore
@@ -123,6 +120,8 @@ pushd "${USER_HOME_DIR}/dev/menny/dotfiles"
 git remote remove origin
 git remote add origin git@github.com:menny/dotfiles.git
 popd
+
+ssh-keygen -R github.com
 
 sudo fwupdmgr refresh --force && sudo fwupdmgr update
 

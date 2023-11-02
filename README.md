@@ -2,7 +2,9 @@
 My personal dotfiles repo and related tools.
 
 # Setup from web:
+```shell
 wget --no-check-certificate https://raw.githubusercontent.com/menny/dotfiles/master/dell-fedora-setup.sh -O - | sh
+```
 
 # Usage
 
