@@ -37,7 +37,8 @@ sudo dnf install -y snapd
 sudo systemctl enable --now snapd.socket
 sudo systemctl start --now snapd.socket
 sudo ln -s /var/lib/snapd/snap /snap
-sudo snap install snap-store
+sudo snap refresh
+sudo snap install snap-store || true
 
 sudo dnf install -y fwupd gnome-firmware
 sudo dnf install -y NetworkManager NetworkManager-openconnect NetworkManager-openconnect-gnome

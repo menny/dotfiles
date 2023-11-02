@@ -117,7 +117,7 @@ export PATH="$PATH:$HOME/.local/bin"
 
 alias gitclean="git clean -f -d && git reset --hard HEAD"
 alias open="xdg-open"
-alias update-all="yay -Syyu && sudo fwupdmgr refresh --force && sudo fwupdmgr update"
+alias update-all="sudo dnf upgrade && sudo dnf upgrade && sudo fwupdmgr refresh --force && sudo fwupdmgr update"
 
 source "$HOME/.secrets_rc"
 
