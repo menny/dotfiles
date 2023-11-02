@@ -1,6 +1,9 @@
 # dotfiles
 My personal dotfiles repo and related tools.
 
+# Setup from web:
+wget --no-check-certificate https://raw.githubusercontent.com/menny/dotfiles/master/dell-fedora-setup.sh -O - | sh
+
 # Usage
 
  * `dotfiles restore` - links the dotfiles in this repo to the correct locations. This is usually happens once, when you restoring to a new machine.
