@@ -113,6 +113,8 @@ snap install code --classic
 
 wget --no-check-certificate http://install.ohmyz.sh -O - | sh
 
+ssh-keygen -R github.com
+
 mkdir -p "${USER_HOME_DIR}/dev/menny"
 git clone https://github.com/menny/dotfiles.git "${USER_HOME_DIR}/dev/menny/dotfiles"
 "${USER_HOME_DIR}/dev/menny/dotfiles/dotfiles" restore
