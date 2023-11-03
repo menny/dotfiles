@@ -24,6 +24,9 @@ sudo dnf install -y git git-lfs
 sudo dnf install -y openssl wget curl golang java-11-openjdk-devel.x86_64 java-17-openjdk-devel.x86_64 python3 python-pip clang gnupg
 sudo dnf install -y ruby rubygems
 
+#required for Pano clipboard extesion
+sudo dnf install libgda libgda-sqlite
+
 sudo dnf config-manager --set-enabled google-chrome
 sudo dnf install -y google-chrome-stable
 
@@ -124,6 +127,17 @@ popd
 
 ssh-keygen -R github.com
 
+#gnome extensions
+pip3 install --upgrade gnome-extensions-cli
+gnome_ext_array=( 4651 615 1460 5278 )
+
+for i in "${gnome_ext_array[@]}"
+do
+    gnome-extensions-cli install "$i"
+    gnome-extensions-cli enable "$i"
+done
+
+#firmwares
 sudo fwupdmgr refresh --force && sudo fwupdmgr update
 
 echo ""
