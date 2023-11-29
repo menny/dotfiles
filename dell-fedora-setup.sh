@@ -12,16 +12,23 @@ USER_HOME_DIR="$(eval echo ~$USER)"
 sudo sh -c 'echo "max_parallel_downloads=5" >> /etc/dnf/dnf.conf'
 sudo sh -c 'echo "fastestmirror=True" >> /etc/dnf/dnf.conf'
 
+sudo dnf upgrade --refresh
+
 sudo dnf install -y dnf-plugins-core
+sudo dnf install -y dnf-plugin-system-upgrade
+sudo dnf install -y fedora-workstation-repositories
 
 sudo dnf update
-
-sudo dnf install -y fedora-workstation-repositories
 
 sudo dnf install -y gnome-keyring
 sudo dnf install -y kernel-devel
 sudo dnf install -y git git-lfs
-sudo dnf install -y openssl wget curl golang java-11-openjdk-devel.x86_64 java-17-openjdk-devel.x86_64 python3 python-pip clang gnupg
+sudo dnf install -y openssl wget curl golang java-11-openjdk-devel.x86_64 java-17-openjdk-devel.x86_64 
+sudo dnf install -y python3 python-pip clang gnupg python-distutils-extra python-setuptools
+# TO SWITCH TO PYTHON 3.11
+# sudo dnf install -y python3.11
+# sudo ln -s -f /usr/bin/python3.11 /usr/bin/python3
+#
 sudo dnf install -y ruby rubygems
 
 #required for Pano clipboard extesion
@@ -52,6 +59,11 @@ sudo dnf install -y ShellCheck yamllint jq
 sudo dnf install -y cups cups-pdf
 sudo dnf install -y man-db man-pages
 
+# GlobalProtect oss vpn client - use gateway: spotify.gpcloudservice.com
+sudo dnf sudo dnf copr enable yuezk/globalprotect-openconnect
+sudo dnf install globalprotect-openconnect.x86_64
+
+# z-shell
 sudo dnf install -y zsh nano util-linux-user
 
 chsh -s $(which zsh)
@@ -129,7 +141,13 @@ ssh-keygen -R github.com
 
 #gnome extensions
 pip3 install --upgrade gnome-extensions-cli
-gnome_ext_array=( 4651 615 1460 5278 )
+gnome_ext_array=( 
+    4651 # https://extensions.gnome.org/extension/4651/notification-banner-reloaded/
+    615 # https://extensions.gnome.org/extension/615/appindicator-support/
+    5278 # https://extensions.gnome.org/extension/5278/pano/
+    3193 # https://extensions.gnome.org/extension/3193/blur-my-shell/
+    5470 # https://extensions.gnome.org/extension/5470/weather-oclock/
+)
 
 for i in "${gnome_ext_array[@]}"
 do

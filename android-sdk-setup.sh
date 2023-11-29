@@ -1,6 +1,13 @@
 #!/bin/bash
 set -ex
 
+# set up ADB permissions
+sudo groupadd androiddev
+sudo usermod -aG androiddev "$USER"
+# vendor 18d1 is Google
+sudo sh -c 'echo "SUBSYSTEM==\"usb\", ATTRS{idVendor}==\"18d1\", MODE=\"0666\"" /etc/udev/rules.d/99-android.rules'
+
+# installing stuff
 USER_HOME_DIR="$(eval echo ~$USER)"
 
 pushd "$USER_HOME_DIR/dev/menny"
