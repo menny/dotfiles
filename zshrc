@@ -102,10 +102,10 @@ fi
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-export PATH="$HOME/.jenv/bin:$PATH"
-eval "$(jenv init -)"
+# export PATH="$HOME/.jenv/bin:$PATH"
+# eval "$(jenv init -)"
 
-export DAILY_GRADLE_RESTART=1
+# export DAILY_GRADLE_RESTART=1
 
 export ANDROID_SDK="$HOME/dev/sdk"
 export ANDROID_HOME="$HOME/dev/sdk"
@@ -116,8 +116,8 @@ export PATH="$PATH:$HOME/bin"
 export PATH="$PATH:$HOME/.local/bin"
 
 alias gitclean="git clean -f -d && git reset --hard HEAD"
-alias open="xdg-open"
-alias update-all="sudo dnf upgrade && sudo dnf upgrade && sudo fwupdmgr refresh --force && sudo fwupdmgr update"
+# alias open="xdg-open"
+# alias update-all="sudo dnf upgrade && sudo dnf upgrade && sudo fwupdmgr refresh --force && sudo fwupdmgr update"
 
 source "$HOME/.secrets_rc"
 
@@ -127,8 +127,8 @@ export PATH="$PATH:$(go env GOPATH)/bin"
 export PATH="/usr/share/swift/usr/bin:$PATH"
 
 #ruby
-export GEM_HOME="$(ruby -e 'puts Gem.user_dir')"
-export PATH="$PATH:$GEM_HOME/bin"
+# export GEM_HOME="$(ruby -e 'puts Gem.user_dir')"
+# export PATH="$PATH:$GEM_HOME/bin"
 
 #dotfiles
 export PATH="$PATH:$HOME/dev/menny/dotfiles"
