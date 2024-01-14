@@ -245,7 +245,7 @@ case $1 in
             read -p "Can I push to remote? (y)es, (n)o " continue_response
             echo ""
             if [[ "${continue_response}" == "y" ]]; then
-                git push origin master
+                git push origin main
             fi
         fi
         popd > /dev/null
