@@ -49,6 +49,14 @@ popd
 
 ssh-keygen -R github.com
 
+pushd "$USER_HOME_DIR/dev/menny"
+git clone git@github.com:AnySoftKeyboard/AnySoftKeyboard.git
+pushd AnySoftKeyboard
+git remote add upstream git@github.com:AnySoftKeyboard/AnySoftKeyboard.git
+git remote add menny git@github.com:menny/AnySoftKeyboard.git
+popd
+popd
+
 echo ""
 echo "Setup completed!"
 echo "Run additional setup scripts after reboot."

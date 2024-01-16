@@ -25,12 +25,12 @@ rm "$USER_HOME_DIR/android-command-line-tools.zip"
 
 "$USER_HOME_DIR/dev/sdk/temp-tools/cmdline-tools/bin/sdkmanager" --sdk_root="$USER_HOME_DIR/dev/sdk" \
 	"sources;android-34" "platforms;android-34" \
-	"platform-tools" "patcher;v4" "cmdline-tools;latest" \
+	"platform-tools" "cmdline-tools;latest" \
 
 rm -rf "$USER_HOME_DIR/dev/sdk/temp-tools"
 
-wget "https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2021.1.1.22/android-studio-2021.1.1.22-linux.tar.gz" -O "$USER_HOME_DIR/android_studio.tar.gz"
-tar -xf "$USER_HOME_DIR/android_studio.tar.gz" -C "$USER_HOME_DIR/dev/"
-rm "$USER_HOME_DIR/android_studio.tar.gz"
+# wget "https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2021.1.1.22/android-studio-2021.1.1.22-linux.tar.gz" -O "$USER_HOME_DIR/android_studio.tar.gz"
+# tar -xf "$USER_HOME_DIR/android_studio.tar.gz" -C "$USER_HOME_DIR/dev/"
+# rm "$USER_HOME_DIR/android_studio.tar.gz"
 
-"$USER_HOME_DIR/dev/android-studio/bin/studio.sh"
+# "$USER_HOME_DIR/dev/android-studio/bin/studio.sh"
