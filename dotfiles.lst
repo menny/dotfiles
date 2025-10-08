@@ -1,8 +1,8 @@
-encrypted:gnupg:/home/menny/signatures/signatures_gnupg.tar.bz2
-encrypted:secrets_rc:/home/menny/.secrets_rc
-encrypted:ssh:/home/menny/signatures/signatures_ssh.tar.bz2
-plain:chrome-flags:/home/menny/.config/chrome-beta-flags.conf
-plain:git-config-global:/home/menny/.gitconfig
-plain:git-personal:/home/menny/.gitconfig-personal
-plain:git-spotify:/home/menny/.gitconfig-spotify
-plain:zshrc:/home/menny/.zshrc
+encrypted:gnupg:/Users/mennyevendanan/signatures/signatures_gnupg.tar.bz2
+encrypted:secrets_rc:/Users/mennyevendanan/.secrets_rc
+encrypted:ssh:/Users/mennyevendanan/signatures/signatures_ssh.tar.bz2
+plain:chrome-flags:/Users/mennyevendanan/.config/chrome-beta-flags.conf
+plain:git-config-global:/Users/mennyevendanan/.gitconfig
+plain:git-personal:/Users/mennyevendanan/.gitconfig-personal
+plain:git-spotify:/Users/mennyevendanan/.gitconfig-spotify
+plain:zshrc:/Users/mennyevendanan/.zshrc

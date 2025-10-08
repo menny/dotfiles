@@ -1,29 +1,28 @@
 [alias]
 	co = checkout
 	stts = status
-	pr-co = "!git_pr_checkout() { git fetch $1 pull/$2/head:pr_$1_number_$2; git checkout pr_$1_number_$2; }; git_pr_checkout"
 	sw = switch
 	pushf = push --force-with-lease --force-if-includes
+	pickaxe = log -p -S
+	cleanup = "!git branch --merged 2>&1 | grep -v main | grep -v '*' | grep -v release-branch- | sed 's/*//' | xargs -I {} git branch -d {} 2>&1"
+	cleanup-remote = "!git branch -r --merged 2>&1 | grep -v main | grep -v release-branch- | xargs -I {} git branch -d --remote {} 2>&1"
 [user]
 	name = Menny Even Danan
-	signingkey = DD9304645C8EC032
-	email = menny@evendanan.net
 [pager]
 	branch = false
-[includeIf "gitdir:~/dev/spotify/"]
-  path = .gitconfig-spotify
 [includeIf "gitdir:~/dev/menny/"]
   path = .gitconfig-personal
+[includeIf "gitdir:~/dev/asana/"]
+  path = .gitconfig-asana
+[includeIf "gitdir:~/sandbox/"]
+  path = .gitconfig-asana
 [push]
 	default = simple
 [pull]
 	ff = only
 [core]
 	autocrlf = input
-[gpg]
-	program = /usr/bin/gpg
-[commit]
-	gpgsign = true
+	editor = nano
 [filter "lfs"]
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
@@ -32,5 +31,13 @@
 [init]
 	defaultBranch = main
 [safe]
-	directory = /home/menny/dev/menny/mabel
-	directory = /home/menny/dev/menny/AnySoftKeyboard
+	directory = ~/dev/menny/mabel
+	directory = ~/dev/menny/AnySoftKeyboard
+[maintenance]
+	repo = /Users/mennyevendanan/sandbox/asana
+	repo = /Users/mennyevendanan/sandbox/other_asana
+	repo = /Users/mennyevendanan/sandbox/worktrees/asana-testing-worktree
+	repo = /Users/mennyevendanan/sandbox/worktrees/codez2
+	repo = /Users/mennyevendanan/sandbox/mennyevendanan-codez-worktree
+	repo = /Users/mennyevendanan/sandbox/mennyevendanan-does-pnpm-work
+	repo = /Users/mennyevendanan/sandbox/chrishowes-z-worktree
