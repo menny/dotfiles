@@ -108,10 +108,6 @@ alias gitclean="git clean -f -d && git reset --hard HEAD"
 
 source "$HOME/.secrets_rc"
 
-#dotfiles
-export PATH="$PATH:$HOME/dev/menny/dotfiles"
-dotfiles noop
-
 # pnpm
 export PNPM_HOME="/Users/mennyevendanan/Library/pnpm"
 case ":$PATH:" in
@@ -145,3 +141,16 @@ function adb_screenshot() {
   /Users/mennyevendanan/Library/Android/sdk/platform-tools/adb shell rm "$remote_target"
   echo "Screenshot available at $target_file"
 }
+
+# --- Chezmoi Dirty Check ---
+# Check if the chezmoi source directory is a git repo and has changes
+_CHEZMOI_SRC="$HOME/.local/share/chezmoi"
+
+alias dotfiles_save='chezmoi git -- add . && chezmoi git -- commit -m "update" && chezmoi git -- push'
+if [[ -d "$_CHEZMOI_SRC/.git" ]]; then
+    # Use git status --porcelain for a fast, script-friendly check
+    if [[ -n $(git -C "$_CHEZMOI_SRC" status --porcelain 2>/dev/null) ]]; then
+        echo -e "\033[1;33m⚠️  Your dotfiles repo is dirty and need to be pushed to remote\033[0m"
+        echo -e "Run: \033[1;32mdotfiles_save\033[0m"
+    fi
+fi
