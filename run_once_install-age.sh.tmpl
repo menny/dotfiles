@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# Detect OS and install age
+{{ if eq .chezmoi.os "darwin" -}}
+# macOS detected
+if ! command -v age &> /dev/null; then
+    echo "Installing age via Homebrew..."
+    brew install age
+fi
+{{ else if eq .chezmoi.os "linux" -}}
+# Linux detected
+if ! command -v age &> /dev/null; then
+    echo "Installing age via package manager..."
+    # Check for common package managers
+    if command -v apt-get &> /dev/null; then
+        sudo apt-get update && sudo apt-get install -y age
+    elif command -v dnf &> /dev/null; then
+        sudo dnf install -y age
+    elif command -v pacman &> /dev/null; then
+        sudo pacman -S --noconfirm age
+    fi
+fi
+{{ end -}}
+
+# Check if the decryption key exists
+if [ ! -f "$HOME/.config/chezmoi/key.txt" ]; then
+    echo "⚠️  WARNING: ~/.config/chezmoi/key.txt not found."
+    echo "Please restore it from your password manager to allow chezmoi to decrypt your secrets."
+fi

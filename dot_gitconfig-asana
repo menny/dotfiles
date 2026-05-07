@@ -1,0 +1,10 @@
+[user]
+	signingkey = FB5EA7DB17A051CD
+	email = mennyevendanan@asana.com
+[commit]
+	gpgsign = true
+[alias]
+	prboot = pr menny-bootcamp-project
+	lintboot = lint menny-bootcamp-project
+	upboot = pull --rebase origin  menny-bootcamp-project
+	upboot-synced = pull --rebase origin bootcamp-project-synced
