@@ -8,6 +8,7 @@
 	cleanup-remote = "!git branch -r --merged 2>&1 | grep -v main | grep -v release-branch- | xargs -I {} git branch -d --remote {} 2>&1"
 [user]
 	name = Menny Even Danan
+	email = menny@evendanan.net
 [pager]
 	branch = false
 [includeIf "gitdir:~/dev/menny/"]
@@ -41,3 +42,19 @@
 	repo = /Users/mennyevendanan/sandbox/mennyevendanan-codez-worktree
 	repo = /Users/mennyevendanan/sandbox/mennyevendanan-does-pnpm-work
 	repo = /Users/mennyevendanan/sandbox/chrishowes-z-worktree
+	repo = /Users/mennyevendanan/sandbox/worktrees/codez/menny-mac-configure-with-cd
+	repo = /Users/mennyevendanan/sandbox/worktrees/codez/menny-testing-for-working-cli
+	repo = /Users/mennyevendanan/sandbox/worktrees/codez/alexlaughnan-claude-settings
+	repo = /Users/mennyevendanan/sandbox/worktrees/codez/menny-direnv-docs
+	repo = /Users/mennyevendanan/sandbox/worktrees/codez/menny-help-text-in-z-worktree
+	repo = /Users/mennyevendanan/sandbox/worktrees/codez/menny-worktree-1
+	repo = /Users/mennyevendanan/sandbox/worktrees/codez/menny-switch-gcai-to-haiku
+	repo = /Users/mennyevendanan/sandbox/worktrees/codez/menny-worktree-2
+	repo = /Users/mennyevendanan/sandbox/worktrees/codez/menny-convert-executable-bzl-to-js-binary
+	repo = /Users/mennyevendanan/sandbox/worktrees/codez/menny-worktree-4
+	repo = /Users/mennyevendanan/sandbox/worktrees/codez/menny-use-bazel-8-in-production-1213138776848811
+	repo = /Users/mennyevendanan/sandbox/worktrees/codez/menny-worktree-3
+	repo = /Users/mennyevendanan/sandbox/worktrees/codez/menny-testing-yash-new-worktree-request
+	repo = /Users/mennyevendanan/sandbox/worktrees/codez/menny-worktree-5
+	repo = /Users/mennyevendanan/sandbox/worktrees/codez/dull-oysters
+	repo = /Users/mennyevendanan/sandbox/worktrees/codez/goofy-bats
