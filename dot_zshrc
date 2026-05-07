@@ -147,6 +147,8 @@ function adb_screenshot() {
 _CHEZMOI_SRC="$HOME/.local/share/chezmoi"
 
 alias dotfiles_save='chezmoi git -- add . && chezmoi git -- commit -m "update" && chezmoi git -- push'
+chezmoi re-add -v
+
 if [[ -d "$_CHEZMOI_SRC/.git" ]]; then
     # Use git status --porcelain for a fast, script-friendly check
     if [[ -n $(git -C "$_CHEZMOI_SRC" status --porcelain 2>/dev/null) ]]; then
