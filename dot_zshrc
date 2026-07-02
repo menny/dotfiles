@@ -156,3 +156,10 @@ if [[ -d "$_CHEZMOI_SRC/.git" ]]; then
         echo -e "Run: \033[1;32mdotfiles_save\033[0m"
     fi
 fi
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/mennyevendanan/.local/bin:$PATH"
+
+# Added by Antigravity IDE
+export PATH="/Users/mennyevendanan/.antigravity-ide/antigravity-ide/bin:$PATH"
