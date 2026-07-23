@@ -60,6 +60,8 @@
 	repo = /Users/mennyevendanan/sandbox/worktrees/codez/goofy-bats
 	repo = /Users/mennyevendanan/sandbox/worktrees/codez/jazzy-vipers
 	repo = /Users/mennyevendanan/sandbox/worktrees/codez/black-seals
+	repo = /Users/mennyevendanan/sandbox/worktrees/codez/strange-elephants
+	repo = /Users/mennyevendanan/sandbox/worktrees/codez/itchy-tigers
 [credential "https://github.com"]
 	helper = 
 	helper = !/Users/mennyevendanan/.local/share/mise/installs/github-cli/2.83.2/gh_2.83.2_macOS_arm64/bin/gh auth git-credential
