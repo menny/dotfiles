@@ -66,22 +66,11 @@ This setup uses **age** for file encryption.
 ## 🖥️ Supported OS
 - **macOS** (Homebrew required)
 - **Linux** (Ubuntu/Debian, Arch, Fedora)
-"""
 
-with open("README.md", "w") as f:
-    f.write(content)
-
-
-```
-Your `README.md` for your dotfiles repository is ready. It covers the installation process, the specific HTTPS cloning method needed to avoid the "SSH chicken-and-egg" problem, and the instructions for retrieving your decryption key from Google Drive.
-
-[file-tag: code-generated-file-0-1778182450587336862]
-
-### Key highlights included in the README:
-
-* **The Bootstrapping Workflow:** It explicitly tells you to use `https://` for the `chezmoi init` command, ensuring you can pull your repo before your SSH keys are actually deployed to the new machine.
-* **Decryption Key Instructions:** A dedicated section reminds you to manually move `key.txt` from Google Drive to `~/.config/chezmoi/key.txt` before running the apply command.
-* **Command Reference:** A quick-start table for adding, editing, and syncing files so you don't have to look up the documentation every time.
-* **OS Support:** Notes that the configuration is designed for both macOS and Linux.
-
-**Note:** Before pushing this to your GitHub repository, make sure to replace `<your-username>` and `<your-repo-name>` in the "Initialize and Apply" section with your actual GitHub details.
+> [!TIP]
+> **Existing Local Clone:** If you already have this repo checked out locally (e.g. at `~/dev/dotfiles`), you can initialize chezmoi directly from your local path instead of cloning from GitHub:
+> ```bash
+> chezmoi init --source ~/dev/dotfiles
+> chezmoi diff   # Preview changes before applying
+> chezmoi apply  # Apply dotfiles to home directory
+> ```

@@ -1,0 +1,74 @@
+[alias]
+	co = checkout
+	stts = status
+	sw = switch
+	pushf = push --force-with-lease --force-if-includes
+	pickaxe = log -p -S
+	cleanup = "!git branch --merged 2>&1 | grep -v main | grep -v '*' | grep -v release-branch- | sed 's/*//' | xargs -I {} git branch -d {} 2>&1"
+	cleanup-remote = "!git branch -r --merged 2>&1 | grep -v main | grep -v release-branch- | xargs -I {} git branch -d --remote {} 2>&1"
+[user]
+	name = Menny Even Danan
+	email = menny@evendanan.net
+[pager]
+	branch = false
+[includeIf "gitdir:~/dev/menny/"]
+  path = .gitconfig-personal
+[includeIf "gitdir:~/dev/asana/"]
+  path = .gitconfig-asana
+[includeIf "gitdir:~/sandbox/"]
+  path = .gitconfig-asana
+[push]
+	default = simple
+[pull]
+	ff = only
+[core]
+	autocrlf = input
+	editor = nano
+[filter "lfs"]
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+[init]
+	defaultBranch = main
+[safe]
+	directory = ~/dev/menny/mabel
+	directory = ~/dev/menny/AnySoftKeyboard
+
+{{ if eq .chezmoi.os "darwin" -}}
+[maintenance]
+	repo = {{ .chezmoi.homeDir }}/sandbox/asana
+	repo = {{ .chezmoi.homeDir }}/sandbox/other_asana
+	repo = {{ .chezmoi.homeDir }}/sandbox/worktrees/asana-testing-worktree
+	repo = {{ .chezmoi.homeDir }}/sandbox/worktrees/codez2
+	repo = {{ .chezmoi.homeDir }}/sandbox/mennyevendanan-codez-worktree
+	repo = {{ .chezmoi.homeDir }}/sandbox/mennyevendanan-does-pnpm-work
+	repo = {{ .chezmoi.homeDir }}/sandbox/chrishowes-z-worktree
+	repo = {{ .chezmoi.homeDir }}/sandbox/worktrees/codez/menny-mac-configure-with-cd
+	repo = {{ .chezmoi.homeDir }}/sandbox/worktrees/codez/menny-testing-for-working-cli
+	repo = {{ .chezmoi.homeDir }}/sandbox/worktrees/codez/alexlaughnan-claude-settings
+	repo = {{ .chezmoi.homeDir }}/sandbox/worktrees/codez/menny-direnv-docs
+	repo = {{ .chezmoi.homeDir }}/sandbox/worktrees/codez/menny-help-text-in-z-worktree
+	repo = {{ .chezmoi.homeDir }}/sandbox/worktrees/codez/menny-worktree-1
+	repo = {{ .chezmoi.homeDir }}/sandbox/worktrees/codez/menny-switch-gcai-to-haiku
+	repo = {{ .chezmoi.homeDir }}/sandbox/worktrees/codez/menny-worktree-2
+	repo = {{ .chezmoi.homeDir }}/sandbox/worktrees/codez/menny-convert-executable-bzl-to-js-binary
+	repo = {{ .chezmoi.homeDir }}/sandbox/worktrees/codez/menny-worktree-4
+	repo = {{ .chezmoi.homeDir }}/sandbox/worktrees/codez/menny-use-bazel-8-in-production-1213138776848811
+	repo = {{ .chezmoi.homeDir }}/sandbox/worktrees/codez/menny-worktree-3
+	repo = {{ .chezmoi.homeDir }}/sandbox/worktrees/codez/menny-testing-yash-new-worktree-request
+	repo = {{ .chezmoi.homeDir }}/sandbox/worktrees/codez/menny-worktree-5
+	repo = {{ .chezmoi.homeDir }}/sandbox/worktrees/codez/dull-oysters
+	repo = {{ .chezmoi.homeDir }}/sandbox/worktrees/codez/goofy-bats
+	repo = {{ .chezmoi.homeDir }}/sandbox/worktrees/codez/jazzy-vipers
+	repo = {{ .chezmoi.homeDir }}/sandbox/worktrees/codez/black-seals
+	repo = {{ .chezmoi.homeDir }}/sandbox/worktrees/codez/strange-elephants
+	repo = {{ .chezmoi.homeDir }}/sandbox/worktrees/codez/itchy-tigers
+{{ end -}}
+
+[credential "https://github.com"]
+	helper = 
+	helper = !gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !gh auth git-credential

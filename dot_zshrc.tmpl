@@ -100,8 +100,23 @@ source $ZSH/oh-my-zsh.sh
 export ASANA_COB_PREFIX="menny"
 #export GPG_TTY=$(tty)
 
-export JAVA_HOME=`/usr/libexec/java_home -v 21`
+{{ if eq .chezmoi.os "darwin" -}}
+export JAVA_HOME=$(/usr/libexec/java_home -v 21 2>/dev/null)
 export ANDROID_HOME="$HOME/Library/Android/sdk"
+export PNPM_HOME="$HOME/Library/pnpm"
+export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+{{ else if eq .chezmoi.os "linux" -}}
+if [ -d "/usr/lib/jvm/default-java" ]; then
+    export JAVA_HOME="/usr/lib/jvm/default-java"
+elif [ -d "/usr/lib/jvm/java-21-openjdk-amd64" ]; then
+    export JAVA_HOME="/usr/lib/jvm/java-21-openjdk-amd64"
+fi
+export ANDROID_HOME="$HOME/Android/Sdk"
+export PNPM_HOME="$HOME/.local/share/pnpm"
+if [ -d "/home/linuxbrew/.linuxbrew" ]; then
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
+{{ end -}}
 
 alias git-pull-dance-bootcamp="git co bootcamp-project-synced && git pull origin bootcamp-project-synced && git branch -D menny-bootcamp-project && git fetch origin menny-bootcamp-project && git co menny-bootcamp-project && git pull origin menny-bootcamp-project && git pull --rebase origin bootcamp-project-synced && git push -f origin HEAD"
 alias gitclean="git clean -f -d && git reset --hard HEAD"
@@ -109,45 +124,45 @@ alias gitclean="git clean -f -d && git reset --hard HEAD"
 source "$HOME/.secrets_rc"
 
 # pnpm
-export PNPM_HOME="/Users/mennyevendanan/Library/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
 
-export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
-
 setopt HIST_IGNORE_ALL_DUPS
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/mennyevendanan/dev/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/mennyevendanan/dev/google-cloud-sdk/path.zsh.inc'; fi
+if [ -f '{{ .chezmoi.homeDir }}/dev/google-cloud-sdk/path.zsh.inc' ]; then . '{{ .chezmoi.homeDir }}/dev/google-cloud-sdk/path.zsh.inc'; fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f '/Users/mennyevendanan/dev/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/mennyevendanan/dev/google-cloud-sdk/completion.zsh.inc'; fi
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+if [ -f '{{ .chezmoi.homeDir }}/dev/google-cloud-sdk/completion.zsh.inc' ]; then . '{{ .chezmoi.homeDir }}/dev/google-cloud-sdk/completion.zsh.inc'; fi
 
 export EDITOR='nano'
 
 # Added by Antigravity
-export PATH="/Users/mennyevendanan/.antigravity/antigravity/bin:$PATH"
+export PATH="{{ .chezmoi.homeDir }}/.antigravity/antigravity/bin:$PATH"
 
 function adb_screenshot() {
   local target_file="${1:-"$(mktemp).png"}"
   local remote_target="/sdcard/screenshot_$RANDOM_$RANDOM.png"
+  local adb_bin="${ANDROID_HOME}/platform-tools/adb"
 
-  /Users/mennyevendanan/Library/Android/sdk/platform-tools/adb shell screencap -p "$remote_target"
-  /Users/mennyevendanan/Library/Android/sdk/platform-tools/adb pull "$remote_target" "$target_file"
-  /Users/mennyevendanan/Library/Android/sdk/platform-tools/adb shell rm "$remote_target"
+  if ! command -v "$adb_bin" &> /dev/null; then
+    adb_bin="adb"
+  fi
+
+  "$adb_bin" shell screencap -p "$remote_target"
+  "$adb_bin" pull "$remote_target" "$target_file"
+  "$adb_bin" shell rm "$remote_target"
   echo "Screenshot available at $target_file"
 }
 
 # --- Chezmoi Dirty Check ---
 # Check if the chezmoi source directory is a git repo and has changes
-_CHEZMOI_SRC="$HOME/.local/share/chezmoi"
+_CHEZMOI_SRC="{{ .chezmoi.sourceDir }}"
 
 alias dotfiles_save='chezmoi git -- add . && chezmoi git -- commit -m "update" && chezmoi git -- push'
-chezmoi re-add -v
+chezmoi re-add -v 2>/dev/null
 
 if [[ -d "$_CHEZMOI_SRC/.git" ]]; then
     # Use git status --porcelain for a fast, script-friendly check
@@ -157,9 +172,8 @@ if [[ -d "$_CHEZMOI_SRC/.git" ]]; then
     fi
 fi
 
-
 # Added by Antigravity CLI installer
-export PATH="/Users/mennyevendanan/.local/bin:$PATH"
+export PATH="{{ .chezmoi.homeDir }}/.local/bin:$PATH"
 
 # Added by Antigravity IDE
-export PATH="/Users/mennyevendanan/.antigravity-ide/antigravity-ide/bin:$PATH"
+export PATH="{{ .chezmoi.homeDir }}/.antigravity-ide/antigravity-ide/bin:$PATH"
