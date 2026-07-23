@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export PATH="$HOME/.local/bin:$PATH"
+
 # Detect OS and install age
 {{ if eq .chezmoi.os "darwin" -}}
 # macOS detected
