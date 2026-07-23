@@ -1,0 +1,9 @@
+[user]
+	email = menny@evendanan.net
+{{ if eq .chezmoi.os "darwin" -}}
+	signingkey = DD9304645C8EC032
+{{ else if eq .chezmoi.os "linux" -}}
+	signingkey = ~/.ssh/id_ed25519.pub
+{{ end -}}
+[commit]
+	gpgsign = true

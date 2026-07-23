@@ -1,6 +1,10 @@
 [user]
-	signingkey = FB5EA7DB17A051CD
 	email = mennyevendanan@asana.com
+{{ if eq .chezmoi.os "darwin" -}}
+	signingkey = FB5EA7DB17A051CD
+{{ else if eq .chezmoi.os "linux" -}}
+	signingkey = ~/.ssh/id_ed25519.pub
+{{ end -}}
 [commit]
 	gpgsign = true
 [alias]

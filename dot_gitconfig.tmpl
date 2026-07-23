@@ -21,6 +21,10 @@
 	default = simple
 [pull]
 	ff = only
+{{ if eq .chezmoi.os "linux" -}}
+[gpg]
+	format = ssh
+{{ end -}}
 [core]
 	autocrlf = input
 	editor = nano
