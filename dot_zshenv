@@ -1,0 +1,34 @@
+# ~/.zshenv: read by EVERY zsh invocation (interactive shells, scripts,
+# `zsh -c`, and systemd units launched through zsh).
+#
+# Pure environment only: exports and PATH assembly. Keep it fast and silent:
+# no command output, no slow commands (nvm.sh, oh-my-zsh), no interactive
+# settings (setopt, completions, prompts), and NO secrets (those live in
+# ~/.secrets_rc for interactive shells and in per-service systemd
+# EnvironmentFile units for services).
+#
+# Managed by chezmoi (dot_zshenv). Interactive-only setup stays in ~/.zshrc.
+
+export ASANA_COB_PREFIX="menny"
+export EDITOR="nano"
+
+if [ -d "/usr/lib/jvm/default-java" ]; then
+  export JAVA_HOME="/usr/lib/jvm/default-java"
+elif [ -d "/usr/lib/jvm/java-21-openjdk-amd64" ]; then
+  export JAVA_HOME="/usr/lib/jvm/java-21-openjdk-amd64"
+fi
+export ANDROID_HOME="$HOME/Android"
+export PNPM_HOME="$HOME/.local/share/pnpm"
+export NVM_DIR="$HOME/.nvm"
+
+# Pinned node for determinism in scripts and services. Interactive shells
+# may still switch versions via nvm (sourced in ~/.zshrc). Bump this when
+# the `nvm alias default` version changes.
+_OPENCODE_NODE_BIN="$NVM_DIR/versions/node/v24.5.0/bin"
+
+# Assemble PATH highest-precedence first, then dedupe (zshenv can run
+# alongside ~/.profile and ~/.zshrc prepends).
+PATH="$HOME/.opencode/bin:$HOME/.antigravity-ide/antigravity-ide/bin:$HOME/.antigravity/antigravity/bin:$HOME/.local/bin:$PNPM_HOME:$ANDROID_HOME/platform-tools:$ANDROID_HOME/cmdline-tools/latest/bin:$_OPENCODE_NODE_BIN:$JAVA_HOME/bin:$PATH"
+unset _OPENCODE_NODE_BIN
+typeset -U path
+export PATH

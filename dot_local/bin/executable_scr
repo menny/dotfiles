@@ -1,0 +1,156 @@
+#!/usr/bin/env bash
+# scr - GNU Screen utility wrapper with fzf integration
+
+cmd_ls() {
+    local screen_out
+    screen_out=$(screen -ls 2>/dev/null)
+    if echo "$screen_out" | grep -qE "^[[:space:]]+[0-9]+\."; then
+        printf "\033[1;36m[GNU Screen] Active Sessions:\033[0m\n"
+        echo "$screen_out" | grep -E "^[[:space:]]+[0-9]+\." | while read -r line; do
+            session=$(echo "$line" | awk '{print $1}')
+            state=$(echo "$line" | grep -oE "\((Attached|Detached|Dead)\)" || echo "")
+            printf "  \033[32m●\033[0m \033[1m%-28s\033[0m State: \033[33m%s\033[0m\n" "$session" "$state"
+        done
+        printf "\033[90mResume:  screen -r <session> (or screen -x <session> if Attached)\033[0m\n"
+        printf "\033[90mCreate:  screen -S <name>\033[0m\n"
+        printf "\033[90mDestroy: screen -XS <session> quit\033[0m\n\n"
+    else
+        printf "\033[1;36m[GNU Screen]\033[0m No active sessions. (Create: \033[90mscreen -S <name>\033[0m)\n\n"
+    fi
+}
+
+get_active_sessions() {
+    screen -ls 2>/dev/null | grep -E "^[[:space:]]+[0-9]+\." | while read -r line; do
+        session=$(echo "$line" | awk '{print $1}')
+        state=$(echo "$line" | grep -oE "\((Attached|Detached|Dead)\)" || echo "")
+        printf "%-32s %s\n" "$session" "$state"
+    done
+}
+
+cmd_rm() {
+    local target="$1"
+    if [[ -z "$target" ]]; then
+        local active_sessions
+        active_sessions=$(get_active_sessions)
+        if [[ -z "$active_sessions" ]]; then
+            echo "No active screen sessions found to remove."
+            return 0
+        fi
+        if ! command -v fzf >/dev/null 2>&1; then
+            echo "Error: fzf is not installed." >&2
+            return 1
+        fi
+        local selected
+        selected=$(echo "$active_sessions" | fzf --prompt="Destroy session > " --header="Select session to destroy:")
+        if [[ -n "$selected" ]]; then
+            target=$(echo "$selected" | awk '{print $1}')
+        fi
+    fi
+
+    if [[ -n "$target" ]]; then
+        screen -XS "$target" quit
+        echo "Destroyed screen session: $target"
+    fi
+}
+
+cmd_resume() {
+    local target="$1"
+    if [[ -z "$target" ]]; then
+        local active_sessions
+        active_sessions=$(get_active_sessions)
+        if [[ -z "$active_sessions" ]]; then
+            echo "No active screen sessions found to resume."
+            return 0
+        fi
+        if ! command -v fzf >/dev/null 2>&1; then
+            echo "Error: fzf is not installed." >&2
+            return 1
+        fi
+        local selected
+        selected=$(echo "$active_sessions" | fzf --prompt="Resume session > " --header="Select session to resume:")
+        if [[ -n "$selected" ]]; then
+            target=$(echo "$selected" | awk '{print $1}')
+        fi
+    fi
+
+    if [[ -n "$target" ]]; then
+        local session_info
+        session_info=$(screen -ls 2>/dev/null | grep -E "^[[:space:]]+[0-9]+\." | grep "$target")
+        if echo "$session_info" | grep -q "(Attached)"; then
+            exec screen -x "$target"
+        else
+            exec screen -r "$target"
+        fi
+    fi
+}
+
+cmd_start() {
+    local target="$1"
+    if [[ -z "$target" ]]; then
+        if ! command -v fzf >/dev/null 2>&1; then
+            read -r -p "Enter session name: " target
+        else
+            local active_sessions
+            active_sessions=$(get_active_sessions)
+            local fzf_out
+            fzf_out=$( (echo "$active_sessions"; echo "[Type new session name above]") | fzf --print-query --prompt="Start session > " --header="Select existing session or type a new name:" )
+            local query
+            query=$(echo "$fzf_out" | head -n 1)
+            local selection
+            selection=$(echo "$fzf_out" | sed -n '2p')
+
+            if [[ -n "$selection" && "$selection" != "[Type new session name above]" ]]; then
+                target=$(echo "$selection" | awk '{print $1}')
+            elif [[ -n "$query" ]]; then
+                target="$query"
+            fi
+        fi
+    fi
+
+    if [[ -n "$target" ]]; then
+        if screen -ls 2>/dev/null | grep -E "^[[:space:]]+[0-9]+\." | grep -q "$target"; then
+            if screen -ls 2>/dev/null | grep "$target" | grep -q "(Attached)"; then
+                exec screen -x "$target"
+            else
+                exec screen -r "$target"
+            fi
+        else
+            exec screen -S "$target"
+        fi
+    fi
+}
+
+cmd_help() {
+    cat << 'EOF'
+scr - GNU Screen Utility
+
+Usage:
+  scr [ls|list|-l]           List active screen sessions
+  scr rm|kill|remove|exit|-XS [name]  Destroy a screen session (fzf if name omitted)
+  scr start|create|-S [name]          Start/create a screen session (fzf if name omitted)
+  scr resume|-r [name]        Resume a screen session (fzf if name omitted)
+EOF
+}
+
+case "$1" in
+    ls|list|-l|"")
+        cmd_ls
+        ;;
+    rm|kill|remove|exit|-XS)
+        cmd_rm "$2"
+        ;;
+    start|create|-S)
+        cmd_start "$2"
+        ;;
+    resume|-r)
+        cmd_resume "$2"
+        ;;
+    -h|--help|help)
+        cmd_help
+        ;;
+    *)
+        echo "Unknown command: $1"
+        cmd_help
+        exit 1
+        ;;
+esac
